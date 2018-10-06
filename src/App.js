@@ -3,8 +3,6 @@ import React, { Component } from 'react';
 import { createStore } from 'redux';
 import styled from 'styled-components';
 
-
-
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'LOGIN':
@@ -27,17 +25,61 @@ const userLogin = () => store.dispatch({
   type: 'LOGIN'
 })
 
-userLogin()
+class LoginPage extends React.Component {
+  constructor () {
+    super()
+    this.state = {
+      user: 'name',
+      email: 'email',
+      userRandom:[]
+    }
+  }
 
-class SocWri extends Component {
+  componentDidMount () {
+    this.fetchUser()
+  }
+  
+  fetchUser () {
+    fetch('https://randomuser.me/api/?seed=xxx')
+    .then(response => response.json())
+    .then(jsonresults => jsonresults.results.map(users => ({
+        name:`${users.name.first} ${users.name.last}`,
+        email: `${users.email}`
+    })))
+    .then(userRandom => this.setState({ 
+      userRandom
+    }))
+    .catch(error => console.log('Hubo un error', error))
+  }
+
+  validate = () => {
+    return (this.state.user === this.state.userRandom[0].name &&
+    this.state.email === this.state.userRandom[0].email)
+  }
+
+  submit = (e) => {
+    e.preventDefault()
+    this.validate() ? userLogin() : console.log('datos incorrectos')
+  }
+
+  changeName = (e) => {
+    this.setState({user: e.target.value})
+  }
+
+  changeEmail = (e) => {
+    this.setState({email: e.target.value})
+  }
+
   render() {
     return (
       <LoginForm>
-        <label>Nombre: </label> 
-          <input type="text"></input> 
-        <label>Email: </label>
-          <input type="email"></input>
-        <button type="submit">Login</button>
+        <form onSubmit={this.submit} >
+          <label>Nombre: </label> 
+            <input type="text" value={this.state.user} onChange={this.changeName} ></input> 
+          <label>Email: </label>
+            <input type="email" onChange={this.changeEmail}  ></input>
+          <button type="submit" >Login</button>
+        </form>
       </LoginForm>
     );
   }
@@ -45,11 +87,9 @@ class SocWri extends Component {
 
 const LoginForm = styled.label `   
   position: fixed;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 `
 
-export default SocWri;
+export default LoginPage;
