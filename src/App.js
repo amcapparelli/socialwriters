@@ -1,28 +1,55 @@
+/*eslint-disable */
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { createStore } from 'redux';
+import styled from 'styled-components';
 
-class App extends Component {
+
+
+const rootReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'LOGIN':
+    return {logged: state.logged = true }
+  }
+  return state
+}
+
+const store = createStore(rootReducer)
+
+store.subscribe (() => {
+  console.log('store updated', store.getState())
+})
+
+const initialState = {
+  logged: false
+}
+
+const userLogin = () => store.dispatch({
+  type: 'LOGIN'
+})
+
+userLogin()
+
+class SocWri extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <LoginForm>
+        <label>Nombre: </label> 
+          <input type="text"></input> 
+        <label>Email: </label>
+          <input type="email"></input>
+        <button type="submit">Login</button>
+      </LoginForm>
     );
   }
 }
 
-export default App;
+const LoginForm = styled.label `   
+  position: fixed;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`
+
+export default SocWri;
