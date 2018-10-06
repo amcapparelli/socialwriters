@@ -1,41 +1,40 @@
 /*eslint-disable */
-import React, { Component } from 'react';
 import { createStore } from 'redux';
+import React from 'react';
 import styled from 'styled-components';
+import {Redirect} from 'react-router-dom';
 
-
-//Reducers 
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'LOGIN':
     return {logged: state.logged = true }
-    case 'LOGGOUT':
+    case 'LOGOUT':
     return {logged: state.logged = false }
   }
   return state
 }
 
-const store = createStore(rootReducer)
+const store = createStore(rootReducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
 
 store.subscribe (() => {
-  console.log('store updated', store.getState())
   localStorage.setItem('logged', store.getState().logged )
+  
 })
 
 const initialState = {
-  logged: false
+  logged: localStorage.getItem('logged')
 }
 
-//Actions
 const userLogin = () => store.dispatch({
   type: 'LOGIN'
 })
 
-const userLoggout = () => store.dispatch({
-  type: 'LOGGOUT'
+const userLogout = () => store.dispatch({
+  type: 'LOGOUT'
 })
 
-class LoginPage extends React.Component {
+export class LoginPage extends React.Component {
   constructor () {
     super()
     this.state = {
@@ -69,7 +68,13 @@ class LoginPage extends React.Component {
 
   submit = (e) => {
     e.preventDefault()
-    this.validate() ? userLogin() : document.querySelector('.error-message').innerHTML = 'Datos incorrectos'
+    if (this.validate()) {
+      userLogin()
+      const {history} = this.props
+      history.push('/')
+    } else {
+      document.querySelector('.error-message').innerHTML = 'Datos incorrectos'
+    } 
   }
 
   changeName = (e) => {
@@ -93,7 +98,7 @@ class LoginPage extends React.Component {
         </form>
         <div className="error-message"></div>
       </LoginForm>
-      <button onClick={userLoggout} >loggout</button>
+      <button onClick={userLogout} >logout</button>
       </React.Fragment>
     );
   }
@@ -106,4 +111,6 @@ const LoginForm = styled.label `
   transform: translate(-50%, -50%);
 `
 
-export default LoginPage;
+export default {
+  LoginPage
+};
