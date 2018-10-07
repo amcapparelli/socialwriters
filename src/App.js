@@ -1,38 +1,7 @@
-/*eslint-disable */
-import { createStore } from 'redux';
 import React from 'react';
 import styled from 'styled-components';
-import {Redirect} from 'react-router-dom';
+import {userLogin, userLogout} from './redux'
 
-const rootReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case 'LOGIN':
-    return {logged: state.logged = true }
-    case 'LOGOUT':
-    return {logged: state.logged = false }
-  }
-  return state
-}
-
-const store = createStore(rootReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
-
-store.subscribe (() => {
-  localStorage.setItem('logged', store.getState().logged )
-  
-})
-
-const initialState = {
-  logged: localStorage.getItem('logged')
-}
-
-const userLogin = () => store.dispatch({
-  type: 'LOGIN'
-})
-
-const userLogout = () => store.dispatch({
-  type: 'LOGOUT'
-})
 
 export class LoginPage extends React.Component {
   constructor () {
@@ -87,6 +56,7 @@ export class LoginPage extends React.Component {
 
   render() {
     return (
+      
       <React.Fragment>
       <LoginForm>
         <form onSubmit={this.submit} >
@@ -100,6 +70,7 @@ export class LoginPage extends React.Component {
       </LoginForm>
       <button onClick={userLogout} >logout</button>
       </React.Fragment>
+      
     );
   }
 }
@@ -110,7 +81,4 @@ const LoginForm = styled.label `
   left: 50%;
   transform: translate(-50%, -50%);
 `
-
-export default {
-  LoginPage
-};
+export default LoginPage
