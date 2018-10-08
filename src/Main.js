@@ -19,7 +19,7 @@ export default Routes
 const Home = () => {
     if (localStorage.getItem('logged') === 'true') {
         return(
-        <h1>Hola</h1>
+            <Usersview/>
         ) 
     } else {
         return (
@@ -29,6 +29,49 @@ const Home = () => {
             </div>
         )
     }
-   
 }
+
+class Usersview extends React.Component {
+    state = {
+        usersDB: []
+    }
+    componentDidMount () {
+        fetch('https://randomuser.me/api/?results=10&seed=xxx')
+        .then(response => response.json())
+        .then(usersFromApi => this.setState({
+            usersDB: usersFromApi
+        }))
+        .catch(error => console.log('Hubo un error', error))
+    }
+      render() {
+        const {usersDB} = this.state
+        const usersResults = usersDB.results 
+        let mapa = 
+        usersResults&& 
+        usersResults.map((writer) => {
+        return(
+            <li key={writer.name.last}>
+                <img src={writer.picture.medium} ></img>
+                <h3>{writer.name.first}</h3>
+                <p>{writer.email}</p>
+            </li>
+            )
+        })
+        return(
+            <ul>
+                {mapa}
+            </ul>
+        )
+        
+        
+       /*  {<Profile user={usersDB.results}/> } */
+    }
+}
+
+
+        
+        
+    
+
+
 
