@@ -6,7 +6,7 @@ const rootReducer = (state = initialState, action) => {
       case 'LOGIN':
       return {logged: state.logged = true }
       case 'LOGOUT':
-      return {logged: state.logged = false }
+      return {logged: state.logged = false}
     }
     return state
   }
@@ -26,9 +26,12 @@ export const userLogin = () => store.dispatch({
     type: 'LOGIN'
   })
   
-export const userLogout = () => store.dispatch({
+export const userLogout = () => {
+  window.location.href='/login'
+  store.dispatch({
     type: 'LOGOUT'
   })
+}
 
 
  export default {

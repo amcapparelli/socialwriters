@@ -3,7 +3,7 @@
     --secondary-color: #F1D9A7;
     --links-color: #EEA243 ;
     --yellow-light: #F3E37C;
-    --yeloww-intense: #F3D34A;
+    --yellow-intense: #F3D34A;
 }
 
 ul{
@@ -15,6 +15,7 @@ ul>li {
     list-style: none;
     text-align: center;
     background-color: var(--secondary-color);
+    border-radius: 30px;
     margin: 5%;
     padding: 2%;
 }
@@ -25,4 +26,13 @@ ul>li img {
 
 a {
     color: var(--links-color)
+}
+
+.logout {
+    background-color: var(--yellow-intense);
+    font-size: 1.5rem;
+    float: right;
+    margin-right: 10%;
+    color: var(--main-color-orange);
+    border-radius: 10px;
 }

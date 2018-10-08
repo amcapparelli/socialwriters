@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {userLogin, userLogout} from './redux'
+import {userLogin} from './redux'
 
 
 export class LoginPage extends React.Component {
@@ -56,21 +56,16 @@ export class LoginPage extends React.Component {
 
   render() {
     return (
-      
-      <React.Fragment>
       <LoginForm>
         <form onSubmit={this.submit} >
           <label>Nombre: </label> 
-            <input type="text" value={this.state.user} onChange={this.changeName} ></input> 
+            <input type="text" onChange={this.changeName} ></input> 
           <label>Email: </label>
             <input type="email" onChange={this.changeEmail}  ></input>
           <button type="submit" >Login</button>
         </form>
         <div className="error-message"></div>
       </LoginForm>
-      <button onClick={userLogout} >logout</button>
-      </React.Fragment>
-      
     );
   }
 }

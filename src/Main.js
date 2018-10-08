@@ -2,6 +2,7 @@
 import React from 'react';
 import {LoginPage} from './App';
 import {AuthorProfile} from './AuthorProfile'
+import {userLogout} from './redux'
 import {BrowserRouter, Link, Route} from 'react-router-dom';
 import './Main.css'
 
@@ -51,19 +52,24 @@ class Usersview extends React.Component {
         const usersResults = usersDB.results 
         
         return(
-            <ul>
-                <WritersView users={usersResults} className="writers-view" />
-            </ul>
+            <div>
+                <LogoutButton/> 
+                <ul>
+                    <WritersView writers={usersResults} className="writers-view" />
+                </ul>
+            </div>
         )
     }
 }
 
-const WritersView = ({users}) =>
-    users&& 
-    users.map(writer => {
+const LogoutButton = () => <button onClick={userLogout} className="logout" >logout</button>  
+
+const WritersView = ({writers}) =>
+writers&& 
+writers.map(writer => {
     return(
         <li key={writer.name.last}>
-            <img src={writer.picture.medium} ></img>
+            <img src={writer.picture.large} ></img>
             <h3>{writer.name.first}</h3>
             <p>{writer.email}</p>
             <Link to={`/author/${writer.login.uuid}`}>View Profile</Link>
