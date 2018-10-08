@@ -1,0 +1,28 @@
+:root {
+    --main-color-orange: #F3A738;
+    --secondary-color: #F1D9A7;
+    --links-color: #EEA243 ;
+    --yellow-light: #F3E37C;
+    --yeloww-intense: #F3D34A;
+}
+
+ul{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+ul>li {
+    list-style: none;
+    text-align: center;
+    background-color: var(--secondary-color);
+    margin: 5%;
+    padding: 2%;
+}
+
+ul>li img {
+    border-radius: 100%;
+}
+
+a {
+    color: var(--links-color)
+}

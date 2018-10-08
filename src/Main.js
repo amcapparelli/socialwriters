@@ -1,7 +1,9 @@
 /*eslint-disable */
 import React from 'react';
 import {LoginPage} from './App';
+import {AuthorProfile} from './AuthorProfile'
 import {BrowserRouter, Link, Route} from 'react-router-dom';
+import './Main.css'
 
 const Routes = () => {
    return(
@@ -9,6 +11,7 @@ const Routes = () => {
     <div>
         <Route exact path="/" component={Home} ></Route>
         <Route path="/login" component={LoginPage}></Route>
+        <Route path="/author" component={AuthorProfile}></Route>
     </div>
     </BrowserRouter>
    ) 
@@ -46,30 +49,28 @@ class Usersview extends React.Component {
       render() {
         const {usersDB} = this.state
         const usersResults = usersDB.results 
-        let mapa = 
-        usersResults&& 
-        usersResults.map((writer) => {
-        return(
-            <li key={writer.name.last}>
-                <img src={writer.picture.medium} ></img>
-                <h3>{writer.name.first}</h3>
-                <p>{writer.email}</p>
-            </li>
-            )
-        })
+        
         return(
             <ul>
-                {mapa}
+                <WritersView users={usersResults} className="writers-view" />
             </ul>
         )
-        
-        
-       /*  {<Profile user={usersDB.results}/> } */
     }
 }
 
-
-        
+const WritersView = ({users}) =>
+    users&& 
+    users.map(writer => {
+    return(
+        <li key={writer.name.last}>
+            <img src={writer.picture.medium} ></img>
+            <h3>{writer.name.first}</h3>
+            <p>{writer.email}</p>
+            <Link to={`/author/${writer.login.uuid}`}>View Profile</Link>
+        </li>
+        )
+    })
+    || null
         
     
 
