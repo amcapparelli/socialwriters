@@ -19,7 +19,8 @@ const rootReducer = (state = initialState, action) => {
   })
   
   const initialState = {
-    logged: localStorage.getItem('logged')
+    logged: localStorage.getItem('logged'),
+    writers:[]
   }
   
 export const userLogin = () => store.dispatch({

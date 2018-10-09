@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {userLogin} from './redux'
+import { userLogin } from './redux'
 
 
 export class LoginPage extends React.Component {

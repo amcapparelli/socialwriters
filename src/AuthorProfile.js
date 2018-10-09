@@ -1,12 +1,19 @@
 /*eslint-disable */
 import React from 'react';
 
-export const AuthorProfile = () => {
-    return(
-        <div>
-            <p>estoy en author profile</p>
-        </div>
-    )
+export class AuthorProfile extends React.Component {
+ 
+    componentDidMount() {
+        
+    }
+    
+
+    render(){
+        
+        return(
+            <p>1</p>
+        )
+    }
 }
 
 export default AuthorProfile

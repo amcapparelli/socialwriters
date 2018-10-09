@@ -12,7 +12,7 @@ const Routes = () => {
     <div>
         <Route exact path="/" component={Home} ></Route>
         <Route path="/login" component={LoginPage}></Route>
-        <Route path="/author" component={AuthorProfile}></Route>
+        <Route path="/author"  component={AuthorProfile} />
     </div>
     </BrowserRouter>
    ) 
@@ -72,7 +72,7 @@ writers.map(writer => {
             <img src={writer.picture.large} ></img>
             <h3>{writer.name.first}</h3>
             <p>{writer.email}</p>
-            <Link to={`/author/${writer.login.uuid}`}>View Profile</Link>
+            <Link to={`/author/${writer.login.uuid}`} >View Profile</Link>
         </li>
         )
     })
