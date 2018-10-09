@@ -1,8 +1,9 @@
 /*eslint-disable */
 import React from 'react';
 import {LoginPage} from './App';
-import {AuthorProfile} from './AuthorProfile'
-import {userLogout} from './redux'
+import {SingleAuthorPage} from './AuthorProfile';
+import {userLogout, fetchWriters, store} from './redux';
+import {Provider, connect} from 'react-redux';
 import {BrowserRouter, Link, Route} from 'react-router-dom';
 import './Main.css'
 
@@ -12,7 +13,7 @@ const Routes = () => {
     <div>
         <Route exact path="/" component={Home} ></Route>
         <Route path="/login" component={LoginPage}></Route>
-        <Route path="/author"  component={AuthorProfile} />
+        <Route path="/author" component={SingleAuthorPage} />
     </div>
     </BrowserRouter>
    ) 
@@ -36,27 +37,24 @@ const Home = () => {
 }
 
 class Usersview extends React.Component {
-    state = {
-        usersDB: []
-    }
+    
     componentDidMount () {
         fetch('https://randomuser.me/api/?results=10&seed=xxx')
         .then(response => response.json())
-        .then(usersFromApi => this.setState({
-            usersDB: usersFromApi
-        }))
+        .then(usersFromApi => fetchWriters(usersFromApi.results) 
+        )
         .catch(error => console.log('Hubo un error', error))
     }
       render() {
-        const {usersDB} = this.state
-        const usersResults = usersDB.results 
         
         return(
             <div>
                 <LogoutButton/> 
+                <Provider store={store}>
                 <ul>
-                    <WritersView writers={usersResults} className="writers-view" />
-                </ul>
+                    <WritersConnected className="writers-view" />
+                </ul> 
+                </Provider>
             </div>
         )
     }
@@ -78,7 +76,10 @@ writers.map(writer => {
     })
     || null
         
-    
+const mapStateToProps = state => ({
+    writers: state.writers
+})
 
+const WritersConnected = connect(mapStateToProps)(WritersView)
 
 

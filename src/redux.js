@@ -1,28 +1,42 @@
 /*eslint-disable */
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 
-const rootReducer = (state = initialState, action) => {
+const rootReducer = (state={}, action) => {
     switch (action.type) {
       case 'LOGIN':
-      return {logged: state.logged = true }
+        return true
       case 'LOGOUT':
-      return {logged: state.logged = false}
+      return false
     }
     return state
   }
   
-  export const store = createStore(rootReducer,
+  const fetchReducer = (state=[], action) => {
+    switch (action.type) {
+      case 'FETCH':
+      return state.writers = action.value
+    }
+    return state
+  }
+
+  const reducers = (combineReducers({
+    logged: rootReducer,
+    writers: fetchReducer
+  }))
+
+ let initialState = {
+    logged: localStorage.getItem('logged'),
+    writers:[]
+  }
+
+  export const store = createStore(reducers, initialState,
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
   
   store.subscribe (() => {
     localStorage.setItem('logged', store.getState().logged )
   })
   
-  const initialState = {
-    logged: localStorage.getItem('logged'),
-    writers:[]
-  }
-  
+
 export const userLogin = () => store.dispatch({
     type: 'LOGIN'
   })
@@ -34,9 +48,14 @@ export const userLogout = () => {
   })
 }
 
+export const fetchWriters = (writers) => store.dispatch({
+  type: 'FETCH',
+  value: writers
+})
 
  export default {
       userLogin, 
       userLogout,
-      store
+      store,
+      fetchWriters
   } 
