@@ -1,6 +1,6 @@
 /*eslint-disable */
 import React from 'react';
-import { store } from '../redux';
+import { store, SendRequest } from '../redux';
 import { Provider, connect } from 'react-redux';
 import { LogoutButton } from '../utils/logout-button';
 import './Author-Profile.css';
@@ -22,6 +22,18 @@ const AuthorID = () => {
     return autorId
 }
 
+const getFriendshipRequest = () => {
+    const userRequesting = localStorage.getItem('activeUser')
+    const useerRequested = AuthorID()
+    const friendship = {
+        from: userRequesting,
+        to: useerRequested
+    }
+    localStorage.setItem(userRequesting, useerRequested)
+    SendRequest(friendship)
+}
+
+
 const fullname = (first, last) => {
     return first + ' ' + last
 }
@@ -40,13 +52,12 @@ writers.filter(profile => {
                 <p>City: {writer.location.city}</p>
                 <p>Country:{writer.nat} </p>
                 <p>{writer.email}</p>
-                <button className="follow-button" >Follow Author</button>
+                <button className="follow-button" onClick={getFriendshipRequest} >Follow Author</button>
         </div>
         )
     })
     || null
-
-
+      
 const mapStateToProps = state => ({
     writers: state.writers
 })

@@ -30,7 +30,7 @@ const rootReducer = (state={}, action) => {
   const activeUserReducer = (state={}, action) => {
     switch (action.type) {
       case 'ACTIVE_USER':
-      return state.activeUser = action.value
+      return  action.value
     }
     return state
   }
@@ -45,7 +45,7 @@ const rootReducer = (state={}, action) => {
  let initialState = {
     logged: localStorage.getItem('logged'),
     writers:[],
-    activeUser:[],
+    activeUser: localStorage.getItem('activeUser'),
     friendsRequest:{}
   }
 
@@ -53,7 +53,8 @@ const rootReducer = (state={}, action) => {
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
   
   store.subscribe (() => {
-    localStorage.setItem('logged', store.getState().logged )
+    localStorage.setItem('logged', store.getState().logged ),
+    localStorage.setItem('activeUser', store.getState().activeUser )
   })
   
 
@@ -82,13 +83,6 @@ export const SendRequest = (request) => store.dispatch({
   type: 'FRIEND_REQUEST',
   value: request
 })
-
-const pedidodeAmistad = {
-  de: 'alejandro',
-  a: 'juanita'
-}
-
-SendRequest(pedidodeAmistad)
 
 
  export default {
