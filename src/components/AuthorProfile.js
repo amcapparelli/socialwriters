@@ -7,37 +7,37 @@ import './Author-Profile.css';
 
 export const checkIfOwnProfile = () => {
     if (localStorage.getItem('activeUser') === AuthorID()){
-        return <p>Own Profile</p>
+        return <OwnProfilePage/>
     } else {
         return <SingleAuthorPage/>
     }
 }
 export default checkIfOwnProfile
 
-class SingleAuthorPage extends React.Component {
+class OwnProfilePage extends React.Component {
     state={}
 
     componentDidMount() {
         const pendingRequests = localStorage.getItem(AuthorID())
         this.setState({pendingRequests})
     }
-
-    approveRequest() {
-        console.log('entra')
-    }
-
     render(){
+        return(
+            <ViewRequests requests={this.state.pendingRequests}/>
+        )
+    }
+}
+
+const SingleAuthorPage = () => {
         return(
             <React.Fragment>
                 <LogoutButton/>
             <Provider store={store}>
                 <AutorProfile />
             </Provider>
-            <ViewRequests requests={this.state.pendingRequests}/>
         </React.Fragment>
         )
     }
-} 
 
 const AuthorID = () => {
     const url = window.location.pathname
