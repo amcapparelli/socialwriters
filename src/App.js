@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import { userLogin } from './redux'
+import { userLogin, activeUser } from './redux'
 
 
 export class LoginPage extends React.Component {
   constructor () {
     super()
     this.state = {
-      user: 'name',
-      email: 'email',
+      username: 'username',
+      password: 'password',
       userRandom:[]
     }
   }
@@ -21,8 +21,8 @@ export class LoginPage extends React.Component {
     fetch('https://randomuser.me/api/?seed=xxx')
     .then(response => response.json())
     .then(jsonresults => jsonresults.results.map(users => ({
-        name:`${users.name.first} ${users.name.last}`,
-        email: `${users.email}`
+        username:`${users.login.username}`,
+        password: `${users.login.password}`
     })))
     .then(userRandom => this.setState({ 
       userRandom
@@ -31,14 +31,15 @@ export class LoginPage extends React.Component {
   }
 
   validate = () => {
-    return (this.state.user === this.state.userRandom[0].name &&
-    this.state.email === this.state.userRandom[0].email)
+    return (this.state.username === this.state.userRandom[0].username &&
+    this.state.password === this.state.userRandom[0].password)
   }
 
   submit = (e) => {
     e.preventDefault()
     if (this.validate()) {
       userLogin()
+      activeUser(this.state.username)
       const {history} = this.props
       history.push('/')
     } else {
@@ -46,22 +47,22 @@ export class LoginPage extends React.Component {
     } 
   }
 
-  changeName = (e) => {
-    this.setState({user: e.target.value})
+  changeUserName = (e) => {
+    this.setState({username: e.target.value})
   }
 
-  changeEmail = (e) => {
-    this.setState({email: e.target.value})
+  changePassword = (e) => {
+    this.setState({password: e.target.value})
   }
 
   render() {
     return (
       <LoginForm>
         <form onSubmit={this.submit} >
-          <label>Nombre: </label> 
-            <input type="text" onChange={this.changeName} ></input> 
-          <label>Email: </label>
-            <input type="email" onChange={this.changeEmail}  ></input>
+          <label>UserName: </label> 
+            <input type="text" onChange={this.changeUserName} ></input> 
+          <label>Password: </label>
+            <input type="password" onChange={this.changePassword}  ></input>
           <button type="submit" >Login</button>
         </form>
         <div className="error-message"></div>

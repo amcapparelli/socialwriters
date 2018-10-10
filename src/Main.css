@@ -11,7 +11,7 @@ ul{
     grid-template-columns: repeat(3, 1fr);
 }
 
-ul>li {
+li {
     list-style: none;
     text-align: center;
     background-color: var(--secondary-color);
@@ -26,13 +26,4 @@ ul>li img {
 
 a {
     color: var(--links-color)
-}
-
-.logout {
-    background-color: var(--yellow-intense);
-    font-size: 1.5rem;
-    float: right;
-    margin-right: 10%;
-    color: var(--main-color-orange);
-    border-radius: 10px;
 }

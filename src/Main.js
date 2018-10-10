@@ -1,11 +1,12 @@
 /*eslint-disable */
 import React from 'react';
-import {LoginPage} from './App';
-import {SingleAuthorPage} from './AuthorProfile';
-import {userLogout, fetchWriters, store} from './redux';
-import {Provider, connect} from 'react-redux';
-import {BrowserRouter, Link, Route} from 'react-router-dom';
-import './Main.css'
+import { LoginPage } from './App';
+import { SingleAuthorPage } from './components/AuthorProfile';
+import { fetchWriters, store } from './redux';
+import { Provider, connect } from 'react-redux';
+import { BrowserRouter, Link, Route } from 'react-router-dom';
+import { LogoutButton } from './utils/logout-button';
+import './Main.css';
 
 const Routes = () => {
    return(
@@ -49,7 +50,7 @@ class Usersview extends React.Component {
         
         return(
             <div>
-                <LogoutButton/> 
+                <LogoutButton className={this.props.className} /> 
                 <Provider store={store}>
                 <ul>
                     <WritersConnected className="writers-view" />
@@ -59,8 +60,6 @@ class Usersview extends React.Component {
         )
     }
 }
-
-const LogoutButton = () => <button onClick={userLogout} className="logout" >logout</button>  
 
 const WritersView = ({writers}) =>
 writers&& 

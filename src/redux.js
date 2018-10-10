@@ -6,7 +6,7 @@ const rootReducer = (state={}, action) => {
       case 'LOGIN':
         return true
       case 'LOGOUT':
-      return false
+        return false
     }
     return state
   }
@@ -19,14 +19,34 @@ const rootReducer = (state={}, action) => {
     return state
   }
 
+  const requestReducer = (state={}, action) => {
+    switch (action.type) {
+      case 'FRIEND_REQUEST':
+      return state.friendsRequest = action.value
+    }
+    return state
+  }
+
+  const activeUserReducer = (state={}, action) => {
+    switch (action.type) {
+      case 'ACTIVE_USER':
+      return state.activeUser = action.value
+    }
+    return state
+  }
+
   const reducers = (combineReducers({
     logged: rootReducer,
-    writers: fetchReducer
+    writers: fetchReducer,
+    activeUser:activeUserReducer,
+    friendsRequest: requestReducer
   }))
 
  let initialState = {
     logged: localStorage.getItem('logged'),
-    writers:[]
+    writers:[],
+    activeUser:[],
+    friendsRequest:{}
   }
 
   export const store = createStore(reducers, initialState,
@@ -40,6 +60,11 @@ const rootReducer = (state={}, action) => {
 export const userLogin = () => store.dispatch({
     type: 'LOGIN'
   })
+
+export const activeUser = (user) => store.dispatch({
+  type: 'ACTIVE_USER',
+  value: user
+})
   
 export const userLogout = () => {
   window.location.href='/login'
@@ -52,6 +77,19 @@ export const fetchWriters = (writers) => store.dispatch({
   type: 'FETCH',
   value: writers
 })
+
+export const SendRequest = (request) => store.dispatch({
+  type: 'FRIEND_REQUEST',
+  value: request
+})
+
+const pedidodeAmistad = {
+  de: 'alejandro',
+  a: 'juanita'
+}
+
+SendRequest(pedidodeAmistad)
+
 
  export default {
       userLogin, 
