@@ -22,7 +22,8 @@ export class LoginPage extends React.Component {
     .then(response => response.json())
     .then(jsonresults => jsonresults.results.map(users => ({
         username:`${users.login.username}`,
-        password: `${users.login.password}`
+        password: `${users.login.password}`,
+        userID: `${users.login.uuid}`
     })))
     .then(userRandom => this.setState({ 
       userRandom
@@ -39,7 +40,7 @@ export class LoginPage extends React.Component {
     e.preventDefault()
     if (this.validate()) {
       userLogin()
-      activeUser(this.state.username)
+      activeUser(this.state.userRandom[0].userID)
       const {history} = this.props
       history.push('/')
     } else {

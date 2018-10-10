@@ -35,11 +35,21 @@ const rootReducer = (state={}, action) => {
     return state
   }
 
+  const ApproveRequestReducer = (state={}, action) => {
+    switch (action.type) {
+      case 'APPROVE_REQUEST':
+      return  action.value
+    }
+    return state
+  }
+
+
   const reducers = (combineReducers({
     logged: rootReducer,
     writers: fetchReducer,
     activeUser:activeUserReducer,
-    friendsRequest: requestReducer
+    friendsRequest: requestReducer,
+    ApproveRequest: ApproveRequestReducer
   }))
 
  let initialState = {
@@ -84,10 +94,16 @@ export const SendRequest = (request) => store.dispatch({
   value: request
 })
 
+export const ApproveRequest = (request) => store.dispatch({
+  type: 'APPROVE_REQUEST',
+  value: request
+})
 
  export default {
       userLogin, 
       userLogout,
       store,
-      fetchWriters
+      fetchWriters,
+      SendRequest,
+      ApproveRequest
   } 

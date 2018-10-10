@@ -27,3 +27,14 @@ ul>li img {
 a {
     color: var(--links-color)
 }
+
+.login-warning {
+    position: fixed;
+    background-color: var(--yellow-intense);
+    padding: 2%;
+    border-radius: 20px;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

@@ -1,7 +1,7 @@
 /*eslint-disable */
 import React from 'react';
 import { LoginPage } from './App';
-import { SingleAuthorPage } from './components/AuthorProfile';
+import { checkIfOwnProfile } from './components/AuthorProfile';
 import { fetchWriters, store } from './redux';
 import { Provider, connect } from 'react-redux';
 import { BrowserRouter, Link, Route } from 'react-router-dom';
@@ -14,7 +14,7 @@ const Routes = () => {
     <div>
         <Route exact path="/" component={Home} ></Route>
         <Route path="/login" component={LoginPage}></Route>
-        <Route path="/author" component={SingleAuthorPage} />
+        <Route path="/author" component={checkIfOwnProfile} />
     </div>
     </BrowserRouter>
    ) 
@@ -29,9 +29,9 @@ const Home = () => {
         ) 
     } else {
         return (
-            <div>
-            <p>debe hacer login antes de ver este contenido</p>
-                <Link to="/login">Login</Link>
+            <div className="login-warning">
+            <p>Debes iniciar sesión antes de ver este contenido</p>
+                <Link to="/login">Iniciar Sesión</Link>
             </div>
         )
     }

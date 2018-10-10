@@ -22,3 +22,12 @@
     border-radius: 20px;
     padding: 2%;
 }
+
+.requests-container {
+    max-width: 50%;
+    margin-left: 25%;
+    color: var(--main-color-orange); 
+}
+.requests-container span {
+    color: red; 
+}

@@ -1,20 +1,43 @@
 /*eslint-disable */
 import React from 'react';
-import { store, SendRequest } from '../redux';
+import { store, SendRequest, ApproveRequest, activeUser } from '../redux';
 import { Provider, connect } from 'react-redux';
 import { LogoutButton } from '../utils/logout-button';
 import './Author-Profile.css';
 
-export const SingleAuthorPage = () => 
-        <React.Fragment>
+export const checkIfOwnProfile = () => {
+    if (localStorage.getItem('activeUser') === AuthorID()){
+        return <p>Own Profile</p>
+    } else {
+        return <SingleAuthorPage/>
+    }
+}
+export default checkIfOwnProfile
+
+class SingleAuthorPage extends React.Component {
+    state={}
+
+    componentDidMount() {
+        const pendingRequests = localStorage.getItem(AuthorID())
+        this.setState({pendingRequests})
+    }
+
+    approveRequest() {
+        console.log('entra')
+    }
+
+    render(){
+        return(
+            <React.Fragment>
                 <LogoutButton/>
             <Provider store={store}>
                 <AutorProfile />
             </Provider>
+            <ViewRequests requests={this.state.pendingRequests}/>
         </React.Fragment>
-
-     
-export default SingleAuthorPage
+        )
+    }
+} 
 
 const AuthorID = () => {
     const url = window.location.pathname
@@ -24,15 +47,24 @@ const AuthorID = () => {
 
 const getFriendshipRequest = () => {
     const userRequesting = localStorage.getItem('activeUser')
-    const useerRequested = AuthorID()
+    const userRequested = AuthorID()
     const friendship = {
         from: userRequesting,
-        to: useerRequested
+        to: userRequested
     }
-    localStorage.setItem(userRequesting, useerRequested)
+    localStorage.setItem(userRequested, userRequesting )
     SendRequest(friendship)
 }
 
+const getApproveRequestData = () => {
+    const userApproving = AuthorID()
+    const userAccepted = localStorage.getItem('activeUser')
+    const FriendShipApproval = {
+        from: userApproving,
+        to: userAccepted
+    }
+    ApproveRequest(FriendShipApproval)
+}
 
 const fullname = (first, last) => {
     return first + ' ' + last
@@ -57,7 +89,16 @@ writers.filter(profile => {
         )
     })
     || null
-      
+
+
+const ViewRequests = ({requests}) => 
+    requests&&
+    <div className="requests-container" >
+        <p>tienes una solicitud de amistad de: <span>{requests} </span> </p>
+        <button onClick={getApproveRequestData}>Aprobar</button>
+    </div>
+        || null
+    
 const mapStateToProps = state => ({
     writers: state.writers
 })
