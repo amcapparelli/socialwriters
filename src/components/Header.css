@@ -1,0 +1,12 @@
+@import '../Main.css';
+
+header {
+    background-color: var(--main-color-orange);
+    padding: 2%;
+    color: white;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+}

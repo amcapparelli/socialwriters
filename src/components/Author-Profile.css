@@ -54,3 +54,16 @@
    border: solid 0px;
    border-bottom: solid 1px var(--main-color-orange);
 }
+
+.message-form button {
+    margin-top: 1%;
+    color: var(--main-color-orange);
+    background-color: var(--yellow-light);
+    border-radius: 15px;
+    padding: 0.5%;
+    float: center;
+}
+
+.message-form .hidden {
+    display: none;
+}

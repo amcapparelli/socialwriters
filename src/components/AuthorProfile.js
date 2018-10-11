@@ -2,7 +2,7 @@
 import React from 'react';
 import { store, SendRequest, ApproveRequest } from '../redux';
 import { Provider, connect } from 'react-redux';
-import { LogoutButton } from '../utils/logout-button';
+import { Header } from '../components/Header';
 import './Author-Profile.css';
 
 export const checkIfOwnProfile = () => {
@@ -26,24 +26,29 @@ class OwnProfilePage extends React.Component {
         this.setState({message: e.target.value})
     }
 
-    publishMessage = () => {
+    publishMessage = (e) => {
+        e.preventDefault()
         localStorage.setItem(localStorage.getItem('userID')+' message', this.state.message )
+        const getForm = document.querySelector('.confirmation-message')
+        getForm.innerHTML = '¡¡Mensaje publicado con éxito!!'
     }
 
     render(){
         return(
             <React.Fragment>
-                <LogoutButton/>
+                <Header/>
                 <div className="own-profile-container">
                     <Provider store={store}>
                         <AutorProfile />
                     </Provider>
                         <ViewRequests requests={this.state.pendingRequests}/>
                         <form onSubmit={this.publishMessage} >
-                            <div className="message-form">
+                            <div className="message-form visible">
                                 <h3>¡Publica un nuevo mensaje!</h3>
-                                <textarea rows="4" cols="130" maxLength="150" onChange={this.getMessage} >Hasta 150 caracteres</textarea>
+                                <textarea rows="4" cols="130" maxLength="150" onChange={this.getMessage} value="Hasta 150 caracteres"></textarea>
+                                <br></br>
                                 <button >Publicar</button> 
+                                <div className="confirmation-message"></div>
                             </div>
                         </form>
                 </div>
@@ -64,16 +69,30 @@ class SingleAuthorPage extends React.Component  {
             this.setState({friends: false})
         }   
     }
+    
     render() {
-        return(
+        if(this.state.friends){
+            return(
             <React.Fragment>
-                <LogoutButton/>
+                <Header/>
+            <Provider store={store}>
+                <AutorProfile />
+            </Provider>
+                <GetMessges/>
+            </React.Fragment>
+        )
+        } else {
+            return (
+            <React.Fragment>
+                <Header/>
             <Provider store={store}>
                 <AutorProfile />
             </Provider>
                 <FollowButton/>
-        </React.Fragment>
-        )
+            </React.Fragment>
+            )
+           
+    } 
     }
 }
 
@@ -98,8 +117,8 @@ const getApproveRequestData = () => {
     const userApproving = localStorage.getItem('activeUser')
     const userAccepted = localStorage.getItem(AuthorID())
     const FriendShipApproval = {
-        from: userApproving,
-        to: userAccepted
+            from: userApproving,
+            to: userAccepted
     }
     localStorage.setItem(userApproving, userAccepted )
     ApproveRequest(FriendShipApproval)
@@ -117,12 +136,12 @@ writers.filter(profile => {
 .map(writer => {
     return(
         <div className="writers-profile" key={writer.login.uuid} >
-                <img src={writer.picture.large} alt={fullname(writer.name.first, writer.name.last)} ></img>
-                <h1>{fullname(writer.name.first, writer.name.last)} </h1>
-                <p>Age: {writer.dob.age}</p>
-                <p>City: {writer.location.city}</p>
-                <p>Country:{writer.nat} </p>
-                <p>{writer.email}</p>
+            <img src={writer.picture.large} alt={fullname(writer.name.first, writer.name.last)} ></img>
+            <h1>{fullname(writer.name.first, writer.name.last)} </h1>
+            <p>Age: {writer.dob.age}</p>
+            <p>City: {writer.location.city}</p>
+            <p>Country:{writer.nat} </p>
+            <p>{writer.email}</p>
         </div>
         )
     })
@@ -138,6 +157,11 @@ const ViewRequests = ({requests}) =>
         <button onClick={getApproveRequestData}>Aprobar</button>
     </div>
         || null
+
+const GetMessges = () => {
+    const message = localStorage.getItem(AuthorID() + ' message')
+    return <p>{message}</p>
+}
 
 const mapStateToProps = state => ({
     writers: state.writers

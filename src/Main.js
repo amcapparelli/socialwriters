@@ -7,6 +7,7 @@ import { Provider, connect } from 'react-redux';
 import { BrowserRouter, Link, Route } from 'react-router-dom';
 import { LogoutButton } from './utils/logout-button';
 import fetchUsers from './utils/fetchUsers';
+import { Header } from './components/Header'
 import './Main.css';
 
 const Routes = () => {
@@ -47,7 +48,7 @@ class Usersview extends React.Component {
         
         return(
             <div>
-                <LogoutButton className={this.props.className} /> 
+                <Header/>
                 <Provider store={store}>
                 <ul>
                     <WritersConnected className="writers-view" />
