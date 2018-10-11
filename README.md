@@ -1,4 +1,24 @@
-SocialWriters is a social network for writers created by Alejandro Capparelli
+SocialWriters is a social network for writers created by Alejandro Capparelli.
+
+## USERS:
+
+Your can try these users:
+
++ username: lazyduck414 |
+password: upyours
+
++ username: tinyleopard462 |
+password: marine1
+
++  username: whitefish829 |
+ password: manfred
+
+or any of these 10 other users: 
+
+```
+https://randomuser.me/api/?results=10&seed=xxx
+```
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
