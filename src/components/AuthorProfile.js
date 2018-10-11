@@ -45,7 +45,7 @@ class OwnProfilePage extends React.Component {
                         <form onSubmit={this.publishMessage} >
                             <div className="message-form visible">
                                 <h3>¡Publica un nuevo mensaje!</h3>
-                                <textarea rows="4" cols="130" maxLength="150" onChange={this.getMessage} value="Hasta 150 caracteres"></textarea>
+                                <textarea rows="4" cols="130" maxLength="150" defaultValue="Hasta 150 caraceteres" onChange={this.getMessage} ></textarea>
                                 <br></br>
                                 <button >Publicar</button> 
                                 <div className="confirmation-message"></div>
@@ -160,7 +160,12 @@ const ViewRequests = ({requests}) =>
 
 const GetMessges = () => {
     const message = localStorage.getItem(AuthorID() + ' message')
-    return <p>{message}</p>
+    return (
+        <div className="messages-container">
+            <h2>Mensajes:</h2>
+            <p>{message}</p>
+        </div>
+    ) 
 }
 
 const mapStateToProps = state => ({

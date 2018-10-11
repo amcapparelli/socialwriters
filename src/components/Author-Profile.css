@@ -67,3 +67,11 @@
 .message-form .hidden {
     display: none;
 }
+
+.messages-container {
+    text-align: center;
+}
+
+.messages-container h2 {
+    text-decoration: underline;
+}
