@@ -60,6 +60,14 @@ const loginReducer = (state={}, action) => {
     return state
   }
 
+  const publishMessageReducer = (state={}, action) => {
+    switch (action.type) {
+      case 'PUBLISH_MESSAGE':
+      return  action.value
+    }
+    return state
+  }
+
 const reducers = (combineReducers({
     logged: loginReducer,
     writers: fetchReducer,
@@ -67,7 +75,8 @@ const reducers = (combineReducers({
     friendsRequest: requestReducer,
     ApproveRequest: ApproveRequestReducer,
     userNameLogin: userNameLoginReducer,
-    passwordLogin: passwordLoginReducer
+    passwordLogin: passwordLoginReducer,
+    publishMessage: publishMessageReducer
   }))
 
 //State
@@ -77,7 +86,8 @@ const reducers = (combineReducers({
     activeUser: localStorage.getItem('userID'),
     friendsRequest:{},
     userNameLogin:localStorage.getItem('activeUser'),
-    passwordLogin:[]
+    passwordLogin:[],
+    publishMessage:[]
   }
 
 //Store
@@ -130,6 +140,11 @@ export const getUserName = (username) => store.dispatch({
 export const getPassword = (password) => store.dispatch({
   type: 'GET_PASSWORD',
   value: password
+})
+
+export const publishMessage = (message) => store.dispatch({
+  type: 'PUBLISH_MESSAGE',
+  value: message
 })
 
  export default {

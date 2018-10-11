@@ -21,23 +21,61 @@ class OwnProfilePage extends React.Component {
         const pendingRequests = localStorage.getItem(AuthorID())
         this.setState({pendingRequests})
     }
+
+    getMessage = (e) => {
+        this.setState({message: e.target.value})
+    }
+
+    publishMessage = () => {
+        localStorage.setItem(localStorage.getItem('userID')+' message', this.state.message )
+    }
+
     render(){
         return(
-            <ViewRequests requests={this.state.pendingRequests}/>
+            <React.Fragment>
+                <LogoutButton/>
+                <div className="own-profile-container">
+                    <Provider store={store}>
+                        <AutorProfile />
+                    </Provider>
+                        <ViewRequests requests={this.state.pendingRequests}/>
+                        <form onSubmit={this.publishMessage} >
+                            <div className="message-form">
+                                <h3>¡Publica un nuevo mensaje!</h3>
+                                <textarea rows="4" cols="130" maxLength="150" onChange={this.getMessage} >Hasta 150 caracteres</textarea>
+                                <button >Publicar</button> 
+                            </div>
+                        </form>
+                </div>
+            </React.Fragment>
         )
     }
 }
 
-const SingleAuthorPage = () => {
+class SingleAuthorPage extends React.Component  {
+    state={}
+    componentDidMount () {
+        this.checkFriendship()
+    }
+    checkFriendship = () => {
+        if (localStorage.getItem(AuthorID(), localStorage.getItem('activeUser'))){
+            this.setState({friends: true})
+        } else {
+            this.setState({friends: false})
+        }   
+    }
+    render() {
         return(
             <React.Fragment>
                 <LogoutButton/>
             <Provider store={store}>
                 <AutorProfile />
             </Provider>
+                <FollowButton/>
         </React.Fragment>
         )
     }
+}
 
 const AuthorID = () => {
     const url = window.location.pathname
@@ -57,12 +95,13 @@ const getFriendshipRequest = () => {
 }
 
 const getApproveRequestData = () => {
-    const userApproving = AuthorID()
-    const userAccepted = localStorage.getItem('activeUser')
+    const userApproving = localStorage.getItem('activeUser')
+    const userAccepted = localStorage.getItem(AuthorID())
     const FriendShipApproval = {
         from: userApproving,
         to: userAccepted
     }
+    localStorage.setItem(userApproving, userAccepted )
     ApproveRequest(FriendShipApproval)
 }
 
@@ -84,21 +123,22 @@ writers.filter(profile => {
                 <p>City: {writer.location.city}</p>
                 <p>Country:{writer.nat} </p>
                 <p>{writer.email}</p>
-                <button className="follow-button" onClick={getFriendshipRequest} >Follow Author</button>
         </div>
         )
     })
     || null
 
+const FollowButton = () => <button className="follow-button" onClick={getFriendshipRequest} >Follow Author</button>
 
 const ViewRequests = ({requests}) => 
     requests&&
     <div className="requests-container" >
+        <h2>Hola {localStorage.getItem('activeUser')} </h2>
         <p>tienes una solicitud de amistad de: <span>{requests} </span> </p>
         <button onClick={getApproveRequestData}>Aprobar</button>
     </div>
         || null
-    
+
 const mapStateToProps = state => ({
     writers: state.writers
 })
