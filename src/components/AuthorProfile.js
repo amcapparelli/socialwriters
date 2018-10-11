@@ -1,12 +1,12 @@
 /*eslint-disable */
 import React from 'react';
-import { store, SendRequest, ApproveRequest, activeUser } from '../redux';
+import { store, SendRequest, ApproveRequest } from '../redux';
 import { Provider, connect } from 'react-redux';
 import { LogoutButton } from '../utils/logout-button';
 import './Author-Profile.css';
 
 export const checkIfOwnProfile = () => {
-    if (localStorage.getItem('activeUser') === AuthorID()){
+    if (localStorage.getItem('userID') === AuthorID()){
         return <OwnProfilePage/>
     } else {
         return <SingleAuthorPage/>

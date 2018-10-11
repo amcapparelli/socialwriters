@@ -2,10 +2,11 @@
 import React from 'react';
 import { LoginPage } from './App';
 import { checkIfOwnProfile } from './components/AuthorProfile';
-import { fetchWriters, store } from './redux';
+import { store } from './redux';
 import { Provider, connect } from 'react-redux';
 import { BrowserRouter, Link, Route } from 'react-router-dom';
 import { LogoutButton } from './utils/logout-button';
+import fetchUsers from './utils/fetchUsers';
 import './Main.css';
 
 const Routes = () => {
@@ -40,11 +41,7 @@ const Home = () => {
 class Usersview extends React.Component {
     
     componentDidMount () {
-        fetch('https://randomuser.me/api/?results=10&seed=xxx')
-        .then(response => response.json())
-        .then(usersFromApi => fetchWriters(usersFromApi.results) 
-        )
-        .catch(error => console.log('Hubo un error', error))
+        fetchUsers()
     }
       render() {
         

@@ -1,81 +1,63 @@
 import React from 'react';
-import styled from 'styled-components';
-import { userLogin, activeUser } from './redux'
-
+import { userLogin, activeUser, store, getUserName, getPassword } from './redux';
+import { Provider, connect } from 'react-redux';
+import fetchUsers from './utils/fetchUsers';
 
 export class LoginPage extends React.Component {
-  constructor () {
-    super()
-    this.state = {
-      username: 'username',
-      password: 'password',
-      userRandom:[]
-    }
-  }
-
+  
   componentDidMount () {
-    this.fetchUser()
+    fetchUsers()
   }
   
-  fetchUser () {
-    fetch('https://randomuser.me/api/?seed=xxx')
-    .then(response => response.json())
-    .then(jsonresults => jsonresults.results.map(users => ({
-        username:`${users.login.username}`,
-        password: `${users.login.password}`,
-        userID: `${users.login.uuid}`
-    })))
-    .then(userRandom => this.setState({ 
-      userRandom
-    }))
-    .catch(error => console.log('Hubo un error', error))
-  }
-
-  validate = () => {
-    return (this.state.username === this.state.userRandom[0].username &&
-    this.state.password === this.state.userRandom[0].password)
-  }
-
-  submit = (e) => {
-    e.preventDefault()
-    if (this.validate()) {
-      userLogin()
-      activeUser(this.state.userRandom[0].userID)
-      const {history} = this.props
-      history.push('/')
-    } else {
-      document.querySelector('.error-message').innerHTML = 'Datos incorrectos'
-    } 
-  }
-
-  changeUserName = (e) => {
-    this.setState({username: e.target.value})
-  }
-
-  changePassword = (e) => {
-    this.setState({password: e.target.value})
-  }
-
   render() {
     return (
-      <LoginForm>
-        <form onSubmit={this.submit} >
-          <label>UserName: </label> 
-            <input type="text" onChange={this.changeUserName} ></input> 
-          <label>Password: </label>
-            <input type="password" onChange={this.changePassword}  ></input>
-          <button type="submit" >Login</button>
-        </form>
-        <div className="error-message"></div>
-      </LoginForm>
+      <Provider store={store}>
+        <LoginFormView />
+      </Provider>
     );
   }
 }
 
-const LoginForm = styled.label `   
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-`
-export default LoginPage
+const LoginForm = ({writers, userName, userPassword}) => {
+  const changeUserName = (e) => getUserName(e.target.value)
+  const changePassword = (e) => getPassword(e.target.value)
+
+  const Validate = () => 
+    writers&&
+    writers.filter(user => 
+      user.login.username === userName &&
+      user.login.password === userPassword)
+
+  const submit = (e) => {
+    e.preventDefault()
+    console.log(Validate().length)
+    if (Validate().length === 1) {
+      userLogin()
+      activeUser( Validate()[0].login.uuid )
+      window.location.href='/'
+    } else {
+      document.querySelector('.error-message').innerHTML = 'Ese usuario no existe o la contraseña es incorrecta'
+    } 
+  }
+  return (
+     <form onSubmit={submit} className="login-form" >
+        <label>UserName: </label> 
+        <input type="text" onChange={changeUserName} ></input> 
+        <label>Password: </label>
+        <input type="password" onChange={changePassword}  ></input>
+        <button type="submit" >Login</button>
+        <div className="error-message"></div>
+    </form>
+  )
+}
+
+export default LoginPage 
+
+const mapStateToProps = state => ({
+  writers: state.writers,
+  userName: state.userNameLogin,
+  userPassword: state.passwordLogin
+})
+
+const LoginFormView = connect(mapStateToProps)(LoginForm)
+

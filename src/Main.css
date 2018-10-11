@@ -38,3 +38,16 @@ a {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.error-message {
+    color: red;
+    margin-top: 2%;
+    font-size: 0.8rem;
+}
+
+.login-form {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

@@ -1,7 +1,8 @@
 /*eslint-disable */
 import { createStore, combineReducers } from 'redux';
 
-const rootReducer = (state={}, action) => {
+//Reducers
+const loginReducer = (state={}, action) => {
     switch (action.type) {
       case 'LOGIN':
         return true
@@ -43,31 +44,53 @@ const rootReducer = (state={}, action) => {
     return state
   }
 
+  const userNameLoginReducer = (state={}, action) => {
+    switch (action.type) {
+      case 'GET_USER_NAME':
+      return  action.value
+    }
+    return state
+  }
 
-  const reducers = (combineReducers({
-    logged: rootReducer,
+  const passwordLoginReducer = (state={}, action) => {
+    switch (action.type) {
+      case 'GET_PASSWORD':
+      return  action.value
+    }
+    return state
+  }
+
+const reducers = (combineReducers({
+    logged: loginReducer,
     writers: fetchReducer,
-    activeUser:activeUserReducer,
+    activeUser: activeUserReducer,
     friendsRequest: requestReducer,
-    ApproveRequest: ApproveRequestReducer
+    ApproveRequest: ApproveRequestReducer,
+    userNameLogin: userNameLoginReducer,
+    passwordLogin: passwordLoginReducer
   }))
 
+//State
  let initialState = {
     logged: localStorage.getItem('logged'),
     writers:[],
-    activeUser: localStorage.getItem('activeUser'),
-    friendsRequest:{}
+    activeUser: localStorage.getItem('userID'),
+    friendsRequest:{},
+    userNameLogin:localStorage.getItem('activeUser'),
+    passwordLogin:[]
   }
 
-  export const store = createStore(reducers, initialState,
+//Store
+export const store = createStore(reducers, initialState,
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
   
   store.subscribe (() => {
     localStorage.setItem('logged', store.getState().logged ),
-    localStorage.setItem('activeUser', store.getState().activeUser )
+    localStorage.setItem('activeUser', store.getState().userNameLogin ),
+    localStorage.setItem('userID', store.getState().activeUser)
   })
   
-
+//Dispatchers
 export const userLogin = () => store.dispatch({
     type: 'LOGIN'
   })
@@ -76,7 +99,7 @@ export const activeUser = (user) => store.dispatch({
   type: 'ACTIVE_USER',
   value: user
 })
-  
+
 export const userLogout = () => {
   window.location.href='/login'
   store.dispatch({
@@ -97,6 +120,16 @@ export const SendRequest = (request) => store.dispatch({
 export const ApproveRequest = (request) => store.dispatch({
   type: 'APPROVE_REQUEST',
   value: request
+})
+
+export const getUserName = (username) => store.dispatch({
+  type: 'GET_USER_NAME',
+  value: username
+})
+
+export const getPassword = (password) => store.dispatch({
+  type: 'GET_PASSWORD',
+  value: password
 })
 
  export default {
