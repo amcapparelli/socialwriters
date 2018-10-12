@@ -3,10 +3,11 @@ import React from 'react';
 import { store, SendRequest, ApproveRequest } from '../redux';
 import { Provider, connect } from 'react-redux';
 import { Header } from '../components/Header';
+import { authorID } from '../utils/checkAuthorId';
 import './Author-Profile.css';
 
 export const checkIfOwnProfile = () => {
-    if (localStorage.getItem('userID') === AuthorID()){
+    if (localStorage.getItem('userID') === authorID()){
         return <OwnProfilePage/>
     } else {
         return <SingleAuthorPage/>
@@ -18,7 +19,7 @@ class OwnProfilePage extends React.Component {
     state={}
 
     componentDidMount() {
-        const pendingRequests = localStorage.getItem(AuthorID())
+        const pendingRequests = localStorage.getItem(authorID())
         this.setState({pendingRequests})
     }
 
@@ -63,10 +64,13 @@ class SingleAuthorPage extends React.Component  {
         this.checkFriendship()
     }
     checkFriendship = () => {
-        if (localStorage.getItem(AuthorID(), localStorage.getItem('activeUser'))){
+        const username = localStorage.getItem('activeUser')
+        if (localStorage.getItem(username + ' accepted by ' + authorID()  , true)){
             this.setState({friends: true})
+            console.log('son amigos')
         } else {
             this.setState({friends: false})
+            console.log('no son amigos')
         }   
     }
     
@@ -89,38 +93,48 @@ class SingleAuthorPage extends React.Component  {
                 <AutorProfile />
             </Provider>
                 <FollowButton/>
+                <div className="notifications"></div>
             </React.Fragment>
-            )
-           
-    } 
+            )     
+        } 
     }
 }
 
-const AuthorID = () => {
-    const url = window.location.pathname
-    const autorId = url.substring(url.lastIndexOf('/')+1);
-    return autorId
+const postNotificationRequestSended = () => {
+    const button = document.querySelector('.follow-button')
+    button.classList.add('hidden')
+    const notification = document.querySelector('.notifications')
+    notification.innerHTML = 'Solicitud de amistad enviada'
+}
+
+const postNotificationFriendshipApproved = () => {
+    const requestsContainer = document.querySelector('.requestNotification')
+    requestsContainer.innerHTML = '¡Has aceptado la solicitud!'
+    const button = document.querySelector('.request-button')
+    button.classList.add('hidden')
 }
 
 const getFriendshipRequest = () => {
     const userRequesting = localStorage.getItem('activeUser')
-    const userRequested = AuthorID()
+    const userRequested = authorID()
     const friendship = {
         from: userRequesting,
         to: userRequested
     }
-    localStorage.setItem(userRequested, userRequesting )
+    localStorage.setItem(userRequested, userRequesting)
+    postNotificationRequestSended()
     SendRequest(friendship)
 }
 
 const getApproveRequestData = () => {
-    const userApproving = localStorage.getItem('activeUser')
-    const userAccepted = localStorage.getItem(AuthorID())
+    const userApproving = localStorage.getItem('userID')
+    const userAccepted = localStorage.getItem(authorID())
     const FriendShipApproval = {
             from: userApproving,
             to: userAccepted
     }
-    localStorage.setItem(userApproving, userAccepted )
+    localStorage.setItem(userAccepted + ' accepted by ' + userApproving, true)
+    postNotificationFriendshipApproved()
     ApproveRequest(FriendShipApproval)
 }
 
@@ -131,7 +145,7 @@ const fullname = (first, last) => {
 const WritersView = ({writers}) =>
 writers&& 
 writers.filter(profile => {
-   return profile.login.uuid === AuthorID()
+   return profile.login.uuid === authorID()
 })
 .map(writer => {
     return(
@@ -153,13 +167,13 @@ const ViewRequests = ({requests}) =>
     requests&&
     <div className="requests-container" >
         <h2>Hola {localStorage.getItem('activeUser')} </h2>
-        <p>tienes una solicitud de amistad de: <span>{requests} </span> </p>
-        <button onClick={getApproveRequestData}>Aprobar</button>
+        <p className="requestNotification" >tienes una solicitud de amistad de: <span>{requests} </span> </p>
+        <button className="request-button" onClick={getApproveRequestData}>Aprobar</button>
     </div>
         || null
 
 const GetMessges = () => {
-    const message = localStorage.getItem(AuthorID() + ' message')
+    const message = localStorage.getItem(authorID() + ' message')
     return (
         <div className="messages-container">
             <h2>Mensajes:</h2>

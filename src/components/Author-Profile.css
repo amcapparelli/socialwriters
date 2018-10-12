@@ -43,8 +43,8 @@
     padding: 1%;
 }
 
-.message-form {
-    margin-top: 2%;
+.message-form, .notifications {
+   margin-top: 2%;
    color: var(--main-color-orange);
    text-align: center;
    align-items: center;
@@ -64,7 +64,7 @@
     float: center;
 }
 
-.message-form .hidden {
+.hidden {
     display: none;
 }
 
