@@ -4,6 +4,6 @@ import '../utils/logout-button-style.css';
 
 
 export const LogoutButton = () => 
-<button onClick={userLogout} className="logout-button">logout</button>  
+    <button onClick={userLogout} className="logout-button">logout</button>  
 
 export default LogoutButton

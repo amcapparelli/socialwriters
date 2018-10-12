@@ -19,7 +19,7 @@ class OwnProfilePage extends React.Component {
     state={}
 
     componentDidMount() {
-        const pendingRequests = localStorage.getItem(authorID())
+        const pendingRequests = localStorage.getItem(authorID() + ' requested by ')
         this.setState({pendingRequests})
     }
 
@@ -44,7 +44,7 @@ class OwnProfilePage extends React.Component {
                     </Provider>
                         <ViewRequests requests={this.state.pendingRequests}/>
                         <form onSubmit={this.publishMessage} >
-                            <div className="message-form visible">
+                            <div className="message-form">
                                 <h3>¡Publica un nuevo mensaje!</h3>
                                 <textarea rows="4" cols="130" maxLength="150" defaultValue="Hasta 150 caraceteres" onChange={this.getMessage} ></textarea>
                                 <br></br>
@@ -67,10 +67,8 @@ class SingleAuthorPage extends React.Component  {
         const username = localStorage.getItem('activeUser')
         if (localStorage.getItem(username + ' accepted by ' + authorID()  , true)){
             this.setState({friends: true})
-            console.log('son amigos')
         } else {
             this.setState({friends: false})
-            console.log('no son amigos')
         }   
     }
     
@@ -119,16 +117,16 @@ const getFriendshipRequest = () => {
     const userRequested = authorID()
     const friendship = {
         from: userRequesting,
-        to: userRequested
+        to: userRequested 
     }
-    localStorage.setItem(userRequested, userRequesting)
+    localStorage.setItem(userRequested + ' requested by ', userRequesting )
     postNotificationRequestSended()
     SendRequest(friendship)
 }
 
 const getApproveRequestData = () => {
     const userApproving = localStorage.getItem('userID')
-    const userAccepted = localStorage.getItem(authorID())
+    const userAccepted = localStorage.getItem(authorID() + ' requested by ')
     const FriendShipApproval = {
             from: userApproving,
             to: userAccepted
