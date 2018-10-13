@@ -50,8 +50,8 @@ class Usersview extends React.Component {
             <div>
                 <Header/>
                 <Provider store={store}>
-                <ul>
-                    <WritersConnected className="writers-view" />
+                <ul className="writers-view">
+                    <WritersConnected  />
                 </ul> 
                 </Provider>
             </div>

@@ -6,12 +6,12 @@
     --yellow-intense: #F3D34A;
 }
 
-ul{
+.writers-view {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
 }
 
-li {
+.writers-view li {
     list-style: none;
     text-align: center;
     background-color: var(--secondary-color);

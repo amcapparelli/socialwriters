@@ -72,8 +72,22 @@
     display: none;
 }
 
-.messages-container {
+.messages-container ul {
+    max-width: 40%;
+    margin-left: 30%;
     text-align: center;
+    display: grid;
+    grid-template-rows: 1fr;
+}
+
+.messages-container li {
+    background-color: var(--links-color);
+    margin-top: 1%;
+    max-width: 60%;
+    margin-left: 20%;
+    border-radius: 10px;
+    color: white;
+
 }
 
 .messages-container h2 {

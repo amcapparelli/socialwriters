@@ -4,6 +4,7 @@ import { store, SendRequest, ApproveRequest } from '../redux';
 import { Provider, connect } from 'react-redux';
 import { Header } from '../components/Header';
 import { authorID } from '../utils/checkAuthorId';
+import { GetMessages } from './Messages';
 import './Author-Profile.css';
 
 export const checkIfOwnProfile = () => {
@@ -24,12 +25,19 @@ class OwnProfilePage extends React.Component {
     }
 
     getMessage = (e) => {
-        this.setState({message: e.target.value})
+        this.setState({newMessage: e.target.value})
     }
 
     publishMessage = (e) => {
         e.preventDefault()
-        localStorage.setItem(localStorage.getItem('userID')+' message', this.state.message )
+        let allMessages = []
+        if (localStorage.getItem(localStorage.getItem('userID')+' message')){
+            allMessages = JSON.parse(localStorage.getItem(localStorage.getItem('userID')+' message'))
+            allMessages.push(this.state.newMessage)
+        }else {
+            allMessages.push(this.state.newMessage)
+        }    
+        localStorage.setItem(localStorage.getItem('userID')+' message', JSON.stringify(allMessages) )
         const getForm = document.querySelector('.confirmation-message')
         getForm.innerHTML = '¡¡Mensaje publicado con éxito!!'
     }
@@ -62,6 +70,8 @@ class SingleAuthorPage extends React.Component  {
     state={}
     componentDidMount () {
         this.checkFriendship()
+        const messagesPublished = JSON.parse(localStorage.getItem(authorID() +' message'))
+        this.setState({messagesPublished})
     }
     checkFriendship = () => {
         const username = localStorage.getItem('activeUser')
@@ -80,7 +90,12 @@ class SingleAuthorPage extends React.Component  {
             <Provider store={store}>
                 <AutorProfile />
             </Provider>
-                <GetMessges/>
+            <div className="messages-container">
+                <ul >
+                    <h2>Mensajes: </h2>
+                    <GetMessages  messages={this.state.messagesPublished}/>
+                </ul>
+                </div>
             </React.Fragment>
         )
         } else {
@@ -169,16 +184,6 @@ const ViewRequests = ({requests}) =>
         <button className="request-button" onClick={getApproveRequestData}>Aprobar</button>
     </div>
         || null
-
-const GetMessges = () => {
-    const message = localStorage.getItem(authorID() + ' message')
-    return (
-        <div className="messages-container">
-            <h2>Mensajes:</h2>
-            <p>{message}</p>
-        </div>
-    ) 
-}
 
 const mapStateToProps = state => ({
     writers: state.writers
