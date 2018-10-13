@@ -148,6 +148,7 @@ const getApproveRequestData = () => {
     }
     localStorage.setItem(userAccepted + ' accepted by ' + userApproving, true)
     postNotificationFriendshipApproved()
+    localStorage.removeItem(authorID() + ' requested by ')
     ApproveRequest(FriendShipApproval)
 }
 
