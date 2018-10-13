@@ -82,6 +82,7 @@
 
 .messages-container li {
     background-color: var(--links-color);
+    list-style: none;
     margin-top: 1%;
     max-width: 60%;
     margin-left: 20%;

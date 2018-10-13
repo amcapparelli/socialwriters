@@ -7,6 +7,8 @@ messages&&
         return(
             <li key={message}>{message}</li>
         )
-    }) || null
+    }) || 
+        <p>Este usuario todavía no ha publicado mensajes</p>
+    
 
 export default GetMessages
