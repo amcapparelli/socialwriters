@@ -72,11 +72,18 @@ const postNotificationRequestSended = () => {
 const getFriendshipRequest = () => {
     const userRequesting = localStorage.getItem('activeUser')
     const userRequested = authorID()
+    let userPendingRequests =[]
+    if (localStorage.getItem(userRequested + ' requested by ')){
+        userPendingRequests = JSON.parse(localStorage.getItem(userRequested + ' requested by ')) 
+        userPendingRequests.push(userRequesting)
+    } else {
+        userPendingRequests.push(userRequesting)
+    }
     const friendship = {
         from: userRequesting,
         to: userRequested 
     }
-    localStorage.setItem(userRequested + ' requested by ', userRequesting )
+    localStorage.setItem(userRequested + ' requested by ', JSON.stringify(userPendingRequests) )
     postNotificationRequestSended()
     SendRequest(friendship)
 }

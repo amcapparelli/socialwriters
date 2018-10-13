@@ -10,7 +10,7 @@ export class OwnProfilePage extends React.Component {
     state={}
 
     componentDidMount() {
-        const pendingRequests = localStorage.getItem(authorID() + ' requested by ')
+        const pendingRequests = JSON.parse(localStorage.getItem(authorID() + ' requested by '))
         this.setState({pendingRequests})
     }
 
@@ -58,33 +58,37 @@ export class OwnProfilePage extends React.Component {
     }
 }
 
-const postNotificationFriendshipApproved = () => {
-    const requestsContainer = document.querySelector('.requestNotification')
+const postNotificationFriendshipApproved = (request) => {
+    const requestsContainer = document.querySelector(`[data-name=${request}]`)
     requestsContainer.innerHTML = '¡Has aceptado la solicitud!'
-    const button = document.querySelector('.request-button')
+    const button = document.querySelector(`[data-button=${request}]`)
     button.classList.add('hidden')
 }
 
-const getApproveRequestData = () => {
+const getApproveRequestData = (request) => {
     const userApproving = localStorage.getItem('userID')
-    const userAccepted = localStorage.getItem(authorID() + ' requested by ')
+    const userAccepted = request
     const FriendShipApproval = {
             from: userApproving,
             to: userAccepted
     }
     localStorage.setItem(userAccepted + ' accepted by ' + userApproving, true)
-    postNotificationFriendshipApproved()
+    postNotificationFriendshipApproved(request)
     localStorage.removeItem(authorID() + ' requested by ')
     ApproveRequest(FriendShipApproval)
 }
 
 const ViewRequests = ({requests}) => 
-    requests&&
-    <div className="requests-container" >
-        <h2>Hola {localStorage.getItem('activeUser')} </h2>
-        <p className="requestNotification" >tienes una solicitud de amistad de: <span>{requests} </span> </p>
-        <button className="request-button" onClick={getApproveRequestData}>Aprobar</button>
-    </div>
-        || null
+requests&&
+    requests.map(request => {
+        return(
+            <div className="requests-container" >
+                <h2>Hola {localStorage.getItem('activeUser')} </h2>
+                <p className="requestNotification" data-name={request} >tienes una solicitud de amistad de: <span>{request} </span> </p>
+                <button className="request-button" data-button={request} onClick={() => getApproveRequestData(request)} >Aprobar</button>
+            </div>
+        )
+     }) || null
+    
 
 export default OwnProfilePage
