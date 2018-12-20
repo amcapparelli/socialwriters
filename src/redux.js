@@ -20,26 +20,10 @@ const loginReducer = (state={}, action) => {
     return state
   }
 
-  const requestReducer = (state={}, action) => {
-    switch (action.type) {
-      case 'FRIEND_REQUEST':
-      return state.friendsRequest = action.value
-    }
-    return state
-  }
-
   const activeUserReducer = (state={}, action) => {
     switch (action.type) {
       case 'ACTIVE_USER':
-      return  action.value
-    }
-    return state
-  }
-
-  const ApproveRequestReducer = (state={}, action) => {
-    switch (action.type) {
-      case 'APPROVE_REQUEST':
-      return  action.value
+      return action.value
     }
     return state
   }
@@ -47,7 +31,7 @@ const loginReducer = (state={}, action) => {
   const userNameLoginReducer = (state={}, action) => {
     switch (action.type) {
       case 'GET_USER_NAME':
-      return  action.value
+      return action.value
     }
     return state
   }
@@ -72,8 +56,6 @@ const reducers = (combineReducers({
     logged: loginReducer,
     writers: fetchReducer,
     activeUser: activeUserReducer,
-    friendsRequest: requestReducer,
-    ApproveRequest: ApproveRequestReducer,
     userNameLogin: userNameLoginReducer,
     passwordLogin: passwordLoginReducer,
     publishMessage: publishMessageReducer
@@ -84,7 +66,6 @@ const reducers = (combineReducers({
     logged: localStorage.getItem('logged'),
     writers:[],
     activeUser: localStorage.getItem('userID'),
-    friendsRequest:{},
     userNameLogin:localStorage.getItem('activeUser'),
     passwordLogin:[],
     publishMessage:[]
@@ -122,16 +103,6 @@ export const fetchWriters = (writers) => store.dispatch({
   value: writers
 })
 
-export const SendRequest = (request) => store.dispatch({
-  type: 'FRIEND_REQUEST',
-  value: request
-})
-
-export const ApproveRequest = (request) => store.dispatch({
-  type: 'APPROVE_REQUEST',
-  value: request
-})
-
 export const getUserName = (username) => store.dispatch({
   type: 'GET_USER_NAME',
   value: username
@@ -148,10 +119,6 @@ export const publishMessage = (message) => store.dispatch({
 })
 
  export default {
-      userLogin, 
-      userLogout,
       store,
-      fetchWriters,
-      SendRequest,
-      ApproveRequest
+      fetchWriters
   } 

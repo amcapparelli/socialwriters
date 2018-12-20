@@ -1,6 +1,6 @@
 /*eslint-disable */
 import React from 'react';
-import { store, SendRequest } from '../redux';
+import { store } from '../redux';
 import { Provider, connect } from 'react-redux';
 import { OwnProfilePage } from '../components/OwnProfilePage';
 import { Header } from '../components/Header';
@@ -79,13 +79,10 @@ const getFriendshipRequest = () => {
     } else {
         userPendingRequests.push(userRequesting)
     }
-    const friendship = {
-        from: userRequesting,
-        to: userRequested 
-    }
+    
     localStorage.setItem(userRequested + ' requested by ', JSON.stringify(userPendingRequests))
     postNotificationRequestSended()
-    SendRequest(friendship)
+    
 }
 
 const fullname = (first, last) => {

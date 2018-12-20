@@ -1,7 +1,7 @@
 import React from 'react';
 import { authorID } from '../utils/checkAuthorId';
 import { Header } from '../components/Header';
-import { store, ApproveRequest } from '../redux';
+import { store } from '../redux';
 import { Provider } from 'react-redux';
 import { AuthorProfile } from './AuthorProfile';
 
@@ -68,14 +68,11 @@ const postNotificationFriendshipApproved = (request) => {
 const getApproveRequestData = (request) => {
     const userApproving = localStorage.getItem('userID')
     const userAccepted = request
-    const FriendShipApproval = {
-            from: userApproving,
-            to: userAccepted
-    }
+    
     localStorage.setItem(userAccepted + ' accepted by ' + userApproving, true)
     postNotificationFriendshipApproved(request)
     localStorage.removeItem(authorID() + ' requested by ')
-    ApproveRequest(FriendShipApproval)
+    
 }
 
 const ViewRequests = ({requests}) => 
