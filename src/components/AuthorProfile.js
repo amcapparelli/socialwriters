@@ -83,7 +83,7 @@ const getFriendshipRequest = () => {
         from: userRequesting,
         to: userRequested 
     }
-    localStorage.setItem(userRequested + ' requested by ', JSON.stringify(userPendingRequests) )
+    localStorage.setItem(userRequested + ' requested by ', JSON.stringify(userPendingRequests))
     postNotificationRequestSended()
     SendRequest(friendship)
 }

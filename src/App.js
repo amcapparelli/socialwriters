@@ -1,5 +1,5 @@
 import React from 'react';
-import { userLogin, activeUser, store, getUserName, getPassword } from './redux';
+import { store } from './redux';
 import { Provider, connect } from 'react-redux';
 import fetchUsers from './utils/fetchUsers';
 
@@ -18,22 +18,21 @@ export class LoginPage extends React.Component {
   }
 }
 
-const LoginForm = ({writers, userName, userPassword}) => {
-  const changeUserName = (e) => getUserName(e.target.value)
-  const changePassword = (e) => getPassword(e.target.value)
+const LoginForm = ({ ...props }) => {
+  const changeUserName = (e) => props.getUserName(e.target.value)
+  const changePassword = (e) => props.getPassword(e.target.value)
 
   const Validate = () => 
-    writers&&
-    writers.filter(user => 
-      user.login.username === userName &&
-      user.login.password === userPassword)
+    props.writers&&
+    props.writers.filter(user => 
+      user.login.username === props.userName &&
+      user.login.password === props.userPassword)
 
-  const submit = (e) => {
+  function submit (e) {
     e.preventDefault()
-    console.log(Validate().length)
     if (Validate().length === 1) {
-      userLogin()
-      activeUser( Validate()[0].login.uuid )
+      props.userLogin()
+      props.activeUser( Validate()[0].login.uuid )
       window.location.href='/'
     } else {
       document.querySelector('.error-message').innerHTML = 'Ese usuario no existe o la contraseña es incorrecta'
@@ -59,5 +58,33 @@ const mapStateToProps = state => ({
   userPassword: state.passwordLogin
 })
 
-const LoginFormView = connect(mapStateToProps)(LoginForm)
+const mapDispatchToProps = dispatch => {
+  return {
+    getUserName: (username) => {
+      dispatch({
+        type: 'GET_USER_NAME',
+        value: username
+      })
+    },
+    getPassword: (password) => {
+      dispatch({
+        type: 'GET_PASSWORD',
+        value: password
+      })
+    },
+    userLogin: () => {
+      dispatch({
+        type: 'LOGIN'
+      })
+    },
+    activeUser: (userId) => {
+      dispatch({
+        type: 'ACTIVE_USER',
+        value: userId
+      })
+    }
+  }
+}
+
+const LoginFormView = connect(mapStateToProps, mapDispatchToProps)(LoginForm)
 

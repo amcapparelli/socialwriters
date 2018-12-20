@@ -5,7 +5,6 @@ import { checkIfOwnProfile } from './components/AuthorProfile';
 import { store } from './redux';
 import { Provider, connect } from 'react-redux';
 import { BrowserRouter, Link, Route } from 'react-router-dom';
-import { LogoutButton } from './utils/logout-button';
 import fetchUsers from './utils/fetchUsers';
 import { Header } from './components/Header'
 import './Main.css';
@@ -50,9 +49,9 @@ class Usersview extends React.Component {
             <div>
                 <Header/>
                 <Provider store={store}>
-                <ul className="writers-view">
-                    <WritersConnected  />
-                </ul> 
+                    <ul className="writers-view">
+                        <WritersConnected  />
+                    </ul> 
                 </Provider>
             </div>
         )
@@ -76,6 +75,7 @@ writers.map(writer => {
 const mapStateToProps = state => ({
     writers: state.writers
 })
+
 
 const WritersConnected = connect(mapStateToProps)(WritersView)
 
