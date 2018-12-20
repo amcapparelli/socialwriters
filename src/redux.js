@@ -15,7 +15,7 @@ const loginReducer = (state={}, action) => {
   const fetchReducer = (state=[], action) => {
     switch (action.type) {
       case 'FETCH':
-      return state.writers = action.value
+        return state.writers = action.value
     }
     return state
   }
@@ -23,7 +23,7 @@ const loginReducer = (state={}, action) => {
   const activeUserReducer = (state={}, action) => {
     switch (action.type) {
       case 'ACTIVE_USER':
-      return action.value
+        return action.value
     }
     return state
   }
@@ -31,7 +31,7 @@ const loginReducer = (state={}, action) => {
   const userNameLoginReducer = (state={}, action) => {
     switch (action.type) {
       case 'GET_USER_NAME':
-      return action.value
+        return action.value
     }
     return state
   }
@@ -39,7 +39,15 @@ const loginReducer = (state={}, action) => {
   const passwordLoginReducer = (state={}, action) => {
     switch (action.type) {
       case 'GET_PASSWORD':
-      return  action.value
+        return action.value
+    }
+    return state
+  }
+
+  const newMessageReducer = (state={}, action) => {
+    switch (action.type) {
+      case 'NEW_MESSAGE':
+        return action.value
     }
     return state
   }
@@ -47,7 +55,7 @@ const loginReducer = (state={}, action) => {
   const publishMessageReducer = (state={}, action) => {
     switch (action.type) {
       case 'PUBLISH_MESSAGE':
-      return  action.value
+        return  action.value
     }
     return state
   }
@@ -58,6 +66,7 @@ const reducers = (combineReducers({
     activeUser: activeUserReducer,
     userNameLogin: userNameLoginReducer,
     passwordLogin: passwordLoginReducer,
+    newMessage: newMessageReducer,
     publishMessage: publishMessageReducer
   }))
 
@@ -111,6 +120,11 @@ export const getUserName = (username) => store.dispatch({
 export const getPassword = (password) => store.dispatch({
   type: 'GET_PASSWORD',
   value: password
+})
+
+export const getNewMessage = (msg) => store.dispatch({
+  type: 'NEW_MESSAGE',
+  value: msg
 })
 
 export const publishMessage = (message) => store.dispatch({

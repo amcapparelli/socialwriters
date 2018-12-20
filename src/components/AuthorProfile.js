@@ -10,7 +10,11 @@ import './Author-Profile.css';
 
 export const checkIfOwnProfile = () => {
     if (localStorage.getItem('userID') === authorID()){
-        return <OwnProfilePage/>
+        return (
+            <Provider store={store}>
+                <OwnProfilePage/>
+            </Provider>
+        ) 
     } else {
         return <SingleAuthorPage/>
     }

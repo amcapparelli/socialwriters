@@ -1,31 +1,37 @@
 import React from 'react';
 import { authorID } from '../utils/checkAuthorId';
 import { Header } from '../components/Header';
-import { store } from '../redux';
-import { Provider } from 'react-redux';
+import { connect } from 'react-redux';
 import { AuthorProfile } from './AuthorProfile';
 
 
-export class OwnProfilePage extends React.Component {
-    state={}
+export const OwnProfilePage = () => {
 
-    componentDidMount() {
-        const pendingRequests = JSON.parse(localStorage.getItem(authorID() + ' requested by '))
-        this.setState({pendingRequests})
+        return(
+            <React.Fragment>
+                <Header/>
+                <div className="own-profile-container">
+                    <AuthorProfile />
+                    <ViewRequests requests={JSON.parse(localStorage.getItem(authorID() + ' requested by '))}/>
+                    <FormMessagesConnected></FormMessagesConnected>
+                </div>
+            </React.Fragment>
+        )
     }
 
-    getMessage = (e) => {
-        this.setState({newMessage: e.target.value})
-    }
 
-    publishMessage = (e) => {
+const FormMessages = ({ ...props }) => {
+
+    const getNewMessage = (e) => props.getMessage(e.target.value)
+
+    function publishMessage (e) {
         e.preventDefault()
         let allMessages = []
         if (localStorage.getItem(localStorage.getItem('userID')+' message')){
             allMessages = JSON.parse(localStorage.getItem(localStorage.getItem('userID')+' message'))
-            allMessages.push(this.state.newMessage)
+            allMessages.push(props.newMessage)
         }else {
-            allMessages.push(this.state.newMessage)
+            allMessages.push(props.newMessage)
         }    
         localStorage.setItem(localStorage.getItem('userID')+' message', JSON.stringify(allMessages))
         const textarea = document.querySelector('.textarea')
@@ -34,28 +40,17 @@ export class OwnProfilePage extends React.Component {
         getForm.innerHTML = '¡¡Mensaje publicado con éxito!!'
     }
 
-    render(){
-        return(
-            <React.Fragment>
-                <Header/>
-                <div className="own-profile-container">
-                    <Provider store={store}>
-                        <AuthorProfile />
-                    </Provider>
-                        <ViewRequests requests={this.state.pendingRequests}/>
-                        <form onSubmit={this.publishMessage} >
-                            <div className="message-form">
-                                <h3>¡Publica un nuevo mensaje!</h3>
-                                <textarea rows="4" cols="130" maxLength="150" className="textarea" defaultValue="Hasta 150 caraceteres" onChange={this.getMessage} ></textarea>
-                                <br></br>
-                                <button >Publicar</button> 
-                                <div className="confirmation-message"></div>
-                            </div>
-                        </form>
-                </div>
-            </React.Fragment>
-        )
-    }
+    return(
+        <form onSubmit={publishMessage} >
+            <div className="message-form">
+                <h3>¡Publica un nuevo mensaje!</h3>
+                <textarea rows="4" cols="130" maxLength="150" className="textarea" defaultValue="Hasta 150 caraceteres" onChange={getNewMessage} ></textarea>
+                <br></br>
+                <button >Publicar</button> 
+                <div className="confirmation-message"></div>
+            </div>
+        </form>
+    )
 }
 
 const postNotificationFriendshipApproved = (request) => {
@@ -89,3 +84,20 @@ requests&&
     
 
 export default OwnProfilePage
+
+const mapStateToProps = state => ({
+    newMessage: state.newMessage
+  })
+
+const mapDispatchToProps = dispatch => {
+    return {
+        getMessage: (msg) => {
+            dispatch({
+                type: 'NEW_MESSAGE',
+                value: msg
+            })
+        }
+    }
+}
+
+const FormMessagesConnected = connect(mapStateToProps, mapDispatchToProps)(FormMessages)
