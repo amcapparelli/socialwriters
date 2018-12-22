@@ -21,10 +21,11 @@ export class LoginPage extends React.Component {
 const LoginForm = ({ ...props }) => {
   const changeUserName = (e) => props.getUserName(e.target.value)
   const changePassword = (e) => props.getPassword(e.target.value)
+  const writers = JSON.parse(localStorage.getItem('writers'))
 
   const Validate = () => 
-    props.writers&&
-    props.writers.filter(user => 
+    writers&&
+    writers.filter(user => 
       user.login.username === props.userName &&
       user.login.password === props.userPassword)
 
@@ -53,7 +54,6 @@ const LoginForm = ({ ...props }) => {
 export default LoginPage 
 
 const mapStateToProps = state => ({
-  writers: state.writers,
   userName: state.userNameLogin,
   userPassword: state.passwordLogin
 })

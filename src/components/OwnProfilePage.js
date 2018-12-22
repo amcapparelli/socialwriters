@@ -1,19 +1,24 @@
 import React from 'react';
 import { authorID } from '../utils/checkAuthorId';
 import { Header } from '../components/Header';
-import { connect } from 'react-redux';
-import { AuthorProfile } from './AuthorProfile';
+import { store } from '../redux';
+import { Provider, connect } from 'react-redux';
+import { WritersView } from './AuthorProfile';
 
 
 export const OwnProfilePage = () => {
 
+    const requests = JSON.parse(localStorage.getItem(authorID() + ' requested by '))
+    
         return(
             <React.Fragment>
                 <Header/>
                 <div className="own-profile-container">
-                    <AuthorProfile />
-                    <ViewRequests requests={JSON.parse(localStorage.getItem(authorID() + ' requested by '))}/>
-                    <FormMessagesConnected></FormMessagesConnected>
+                    <WritersView />
+                    <ViewRequests requests={requests}/>
+                    <Provider store={store}>
+                        <FormMessagesConnected />
+                    </Provider>
                 </div>
             </React.Fragment>
         )

@@ -11,14 +11,6 @@ const loginReducer = (state={}, action) => {
     }
     return state
   }
-  
-  const fetchReducer = (state=[], action) => {
-    switch (action.type) {
-      case 'FETCH':
-        return state.writers = action.value
-    }
-    return state
-  }
 
   const activeUserReducer = (state={}, action) => {
     switch (action.type) {
@@ -52,32 +44,20 @@ const loginReducer = (state={}, action) => {
     return state
   }
 
-  const publishMessageReducer = (state={}, action) => {
-    switch (action.type) {
-      case 'PUBLISH_MESSAGE':
-        return  action.value
-    }
-    return state
-  }
-
 const reducers = (combineReducers({
     logged: loginReducer,
-    writers: fetchReducer,
     activeUser: activeUserReducer,
     userNameLogin: userNameLoginReducer,
     passwordLogin: passwordLoginReducer,
-    newMessage: newMessageReducer,
-    publishMessage: publishMessageReducer
+    newMessage: newMessageReducer
   }))
 
 //State
  let initialState = {
     logged: localStorage.getItem('logged'),
-    writers:[],
     activeUser: localStorage.getItem('userID'),
     userNameLogin:localStorage.getItem('activeUser'),
-    passwordLogin:[],
-    publishMessage:[]
+    passwordLogin:[]
   }
 
 //Store
@@ -107,11 +87,6 @@ export const userLogout = () => {
   })
 }
 
-export const fetchWriters = (writers) => store.dispatch({
-  type: 'FETCH',
-  value: writers
-})
-
 export const getUserName = (username) => store.dispatch({
   type: 'GET_USER_NAME',
   value: username
@@ -127,12 +102,5 @@ export const getNewMessage = (msg) => store.dispatch({
   value: msg
 })
 
-export const publishMessage = (message) => store.dispatch({
-  type: 'PUBLISH_MESSAGE',
-  value: message
-})
 
- export default {
-      store,
-      fetchWriters
-  } 
+ export default store

@@ -1,7 +1,5 @@
 /*eslint-disable */
 import React from 'react';
-import { store } from '../redux';
-import { Provider, connect } from 'react-redux';
 import { OwnProfilePage } from '../components/OwnProfilePage';
 import { Header } from '../components/Header';
 import { authorID } from '../utils/checkAuthorId';
@@ -10,61 +8,40 @@ import './Author-Profile.css';
 
 export const checkIfOwnProfile = () => {
     if (localStorage.getItem('userID') === authorID()){
-        return (
-            <Provider store={store}>
-                <OwnProfilePage/>
-            </Provider>
-        ) 
+        return <OwnProfilePage/>
     } else {
         return <SingleAuthorPage/>
     }
 }
 
-class SingleAuthorPage extends React.Component  {
-    state={}
-    componentDidMount () {
-        this.checkFriendship()
-        const messagesPublished = JSON.parse(localStorage.getItem(authorID() +' message'))
-        this.setState({messagesPublished})
-    }
-    checkFriendship = () => {
+export const SingleAuthorPage = () => {
+    
         const username = localStorage.getItem('activeUser')
         if (localStorage.getItem(username + ' accepted by ' + authorID()  , true)){
-            this.setState({friends: true})
-        } else {
-            this.setState({friends: false})
-        }   
-    }
-    render() {
-        if(this.state.friends){
+            const messagesPublished = JSON.parse(localStorage.getItem(authorID() +' message'))
             return(
-            <React.Fragment>
-                <Header/>
-            <Provider store={store}>
-                <AuthorProfile />
-            </Provider>
-            <div className="messages-container">
-                <ul >
-                    <h2>Mensajes: </h2>
-                    <GetMessages  messages={this.state.messagesPublished}/>
-                </ul>
+                <React.Fragment>
+                    <Header/>
+                    <WritersView />
+                <div className="messages-container">
+                    <ul >
+                        <h2>Mensajes: </h2>
+                        <GetMessages  messages={messagesPublished}/>
+                    </ul>
                 </div>
-            </React.Fragment>
-        )
+                </React.Fragment>
+            )
         } else {
             return (
-            <React.Fragment>
-                <Header/>
-            <Provider store={store}>
-                <AuthorProfile />
-            </Provider>
-                <FollowButton/>
-                <div className="notifications"></div>
-            </React.Fragment>
-            )     
-        } 
+                <React.Fragment>
+                    <Header/>
+                    <WritersView />
+                    <FollowButton/>
+                    <div className="notifications"></div>
+                </React.Fragment>
+                )   
+        }   
     }
-}
 
 const postNotificationRequestSended = () => {
     const button = document.querySelector('.follow-button')
@@ -86,14 +63,15 @@ const getFriendshipRequest = () => {
     
     localStorage.setItem(userRequested + ' requested by ', JSON.stringify(userPendingRequests))
     postNotificationRequestSended()
-    
 }
 
 const fullname = (first, last) => {
     return first + ' ' + last
 }
 
-const WritersView = ({writers}) =>
+const writers = JSON.parse(localStorage.getItem('writers'))
+
+export const WritersView = () =>
 writers&& 
 writers.filter(profile => {
    return profile.login.uuid === authorID()
@@ -114,13 +92,7 @@ writers.filter(profile => {
 
 const FollowButton = () => <button className="follow-button" onClick={getFriendshipRequest} >Follow Author</button>
 
-const mapStateToProps = state => ({
-    writers: state.writers
-})
-
-export const AuthorProfile = connect (mapStateToProps)(WritersView)
-
 export default {
     checkIfOwnProfile,
-    AuthorProfile
+    WritersView
 }

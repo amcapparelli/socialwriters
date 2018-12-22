@@ -38,27 +38,22 @@ const Home = () => {
     }
 }
 
-class Usersview extends React.Component {
-    
-    componentDidMount () {
-        fetchUsers()
-    }
-      render() {
+const Usersview = () => {
         
         return(
             <div>
                 <Header/>
-                <Provider store={store}>
-                    <ul className="writers-view">
-                        <WritersConnected  />
-                    </ul> 
-                </Provider>
+                <ul className="writers-view">
+                    <WritersView  />
+                </ul> 
             </div>
         )
     }
-}
 
-const WritersView = ({writers}) =>
+
+const writers = JSON.parse(localStorage.getItem('writers'))
+
+const WritersView = () =>
 writers&& 
 writers.map(writer => {
     return(
@@ -72,11 +67,5 @@ writers.map(writer => {
     })
     || null
         
-const mapStateToProps = state => ({
-    writers: state.writers
-})
-
-
-const WritersConnected = connect(mapStateToProps)(WritersView)
 
 
