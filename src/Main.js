@@ -2,36 +2,35 @@
 import React from 'react';
 import { LoginPage } from './App';
 import { checkIfOwnProfile } from './components/AuthorProfile';
+import { BrowserRouter, Link, Route } from 'react-router-dom';
 import { store } from './redux';
 import { Provider, connect } from 'react-redux';
-import { BrowserRouter, Link, Route } from 'react-router-dom';
-import fetchUsers from './utils/fetchUsers';
 import { Header } from './components/Header'
 import './Main.css';
 
 const Routes = () => {
    return(
+       
        <BrowserRouter>
     <div>
-        <Route exact path="/" component={Home} ></Route>
-        <Route path="/login" component={LoginPage}></Route>
-        <Route path="/author" component={checkIfOwnProfile} />
+        <Route exact path="/" component={ Home } ></Route>
+        <Route path="/login" component={ LoginPage }></Route>
+        <Route path="/author" component={ checkIfOwnProfile } />
     </div>
     </BrowserRouter>
+    
    ) 
 }
 
 export default Routes
 
 const Home = () => {
-    if (localStorage.getItem('logged') === 'true') {
-        return(
-            <Usersview/>
-        ) 
+    if (sessionStorage.getItem('logged') == 'true') {
+        return <Usersview/>
     } else {
         return (
             <div className="login-warning">
-            <p>Debes iniciar sesión antes de ver este contenido</p>
+                <p>Debes iniciar sesión antes de ver este contenido</p>
                 <Link to="/login">Iniciar Sesión</Link>
             </div>
         )
@@ -50,7 +49,6 @@ const Usersview = () => {
         )
     }
 
-
 const writers = JSON.parse(localStorage.getItem('writers'))
 
 const WritersView = () =>
@@ -67,5 +65,3 @@ writers.map(writer => {
     })
     || null
         
-
-
