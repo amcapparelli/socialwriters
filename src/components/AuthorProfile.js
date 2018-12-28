@@ -7,7 +7,7 @@ import { GetMessages } from './Messages';
 import './Author-Profile.css';
 
 export const checkIfOwnProfile = () => {
-    if (localStorage.getItem('userID') === authorID()){
+    if (sessionStorage.getItem('userID') === authorID()){
         return <OwnProfilePage/>
     } else {
         return <SingleAuthorPage/>
@@ -16,7 +16,7 @@ export const checkIfOwnProfile = () => {
 
 export const SingleAuthorPage = () => {
     
-        const username = localStorage.getItem('activeUser')
+        const username = sessionStorage.getItem('activeUser')
         if (localStorage.getItem(username + ' accepted by ' + authorID()  , true)){
             const messagesPublished = JSON.parse(localStorage.getItem(authorID() +' message'))
             return(
@@ -51,7 +51,7 @@ const postNotificationRequestSended = () => {
 }
 
 const getFriendshipRequest = () => {
-    const userRequesting = localStorage.getItem('activeUser')
+    const userRequesting = sessionStorage.getItem('activeUser')
     const userRequested = authorID()
     let userPendingRequests =[]
     if (localStorage.getItem(userRequested + ' requested by ')){

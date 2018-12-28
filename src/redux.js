@@ -55,8 +55,8 @@ const reducers = (combineReducers({
 //State
  let initialState = {
     logged: sessionStorage.getItem('logged'),
-    activeUser: localStorage.getItem('userID'),
-    userNameLogin:localStorage.getItem('activeUser'),
+    activeUser: sessionStorage.getItem('userID'),
+    userNameLogin:sessionStorage.getItem('activeUser'),
     passwordLogin:[]
   }
 
@@ -66,8 +66,8 @@ export const store = createStore(reducers, initialState,
   
   store.subscribe (() => {
     sessionStorage.setItem('logged', store.getState().logged ),
-    localStorage.setItem('activeUser', store.getState().userNameLogin ),
-    localStorage.setItem('userID', store.getState().activeUser)
+    sessionStorage.setItem('activeUser', store.getState().userNameLogin ),
+    sessionStorage.setItem('userID', store.getState().activeUser)
   })
   
 //Dispatchers

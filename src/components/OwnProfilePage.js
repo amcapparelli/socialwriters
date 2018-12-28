@@ -32,13 +32,13 @@ const FormMessages = ({ ...props }) => {
     function publishMessage (e) {
         e.preventDefault()
         let allMessages = []
-        if (localStorage.getItem(localStorage.getItem('userID')+' message')){
-            allMessages = JSON.parse(localStorage.getItem(localStorage.getItem('userID')+' message'))
+        if (localStorage.getItem(sessionStorage.getItem('userID')+' message')){
+            allMessages = JSON.parse(localStorage.getItem(sessionStorage.getItem('userID')+' message'))
             allMessages.push(props.newMessage)
         }else {
             allMessages.push(props.newMessage)
         }    
-        localStorage.setItem(localStorage.getItem('userID')+' message', JSON.stringify(allMessages))
+        localStorage.setItem(sessionStorage.getItem('userID')+' message', JSON.stringify(allMessages))
         const textarea = document.querySelector('.textarea')
         textarea.value= ''
         const getForm = document.querySelector('.confirmation-message')
@@ -66,7 +66,7 @@ const postNotificationFriendshipApproved = (request) => {
 }
 
 const getApproveRequestData = (request) => {
-    const userApproving = localStorage.getItem('userID')
+    const userApproving = sessionStorage.getItem('userID')
     const userAccepted = request
     
     localStorage.setItem(userAccepted + ' accepted by ' + userApproving, true)
@@ -80,7 +80,7 @@ requests&&
     requests.map(request => {
         return(
             <div className="requests-container" >
-                <h2>Hola {localStorage.getItem('activeUser')} </h2>
+                <h2>Hola {sessionStorage.getItem('activeUser')} </h2>
                 <p className="requestNotification" data-name={request} >tienes una solicitud de amistad de: <span>{request} </span> </p>
                 <button className="request-button" data-button={request} onClick={() => getApproveRequestData(request)} >Aprobar</button>
             </div>
