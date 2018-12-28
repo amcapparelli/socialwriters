@@ -15,7 +15,7 @@ const Routes = () => {
     <div>
         <Route exact path="/" component={ Home } ></Route>
         <Route path="/login" component={ LoginPage }></Route>
-        <Route path="/author" component={ checkIfOwnProfile } />
+        <Route path="/author/:id" component={ checkIfOwnProfile } />
     </div>
     </BrowserRouter>
     

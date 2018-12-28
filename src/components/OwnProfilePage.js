@@ -1,21 +1,20 @@
 import React from 'react';
-import { authorID } from '../utils/checkAuthorId';
 import { Header } from '../components/Header';
 import { store } from '../redux';
 import { Provider, connect } from 'react-redux';
 import { WritersView } from './AuthorProfile';
 
 
-export const OwnProfilePage = () => {
+export const OwnProfilePage = (props) => {
 
-    const requests = JSON.parse(localStorage.getItem(authorID() + ' requested by '))
+    const requests = JSON.parse(localStorage.getItem(props.author + ' requested by '))
     
         return(
             <React.Fragment>
                 <Header/>
                 <div className="own-profile-container">
-                    <WritersView />
-                    <ViewRequests requests={requests}/>
+                    <WritersView author={props.author}/>
+                    <ViewRequests requests={requests} author={props.author}/>
                     <Provider store={store}>
                         <FormMessagesConnected />
                     </Provider>
@@ -65,24 +64,24 @@ const postNotificationFriendshipApproved = (request) => {
     button.classList.add('hidden')
 }
 
-const getApproveRequestData = (request) => {
+const getApproveRequestData = (request, author) => {
     const userApproving = sessionStorage.getItem('userID')
     const userAccepted = request
     
     localStorage.setItem(userAccepted + ' accepted by ' + userApproving, true)
     postNotificationFriendshipApproved(request)
-    localStorage.removeItem(authorID() + ' requested by ')
+    localStorage.removeItem(author + ' requested by ')
     
 }
 
-const ViewRequests = ({requests}) => 
+const ViewRequests = ({requests, author}) => 
 requests&&
     requests.map(request => {
         return(
             <div className="requests-container" >
                 <h2>Hola {sessionStorage.getItem('activeUser')} </h2>
                 <p className="requestNotification" data-name={request} >tienes una solicitud de amistad de: <span>{request} </span> </p>
-                <button className="request-button" data-button={request} onClick={() => getApproveRequestData(request)} >Aprobar</button>
+                <button className="request-button" data-button={request} onClick={() => getApproveRequestData(request, author)} >Aprobar</button>
             </div>
         )
      }) || null

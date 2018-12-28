@@ -2,27 +2,27 @@
 import React from 'react';
 import { OwnProfilePage } from '../components/OwnProfilePage';
 import { Header } from '../components/Header';
-import { authorID } from '../utils/checkAuthorId';
 import { GetMessages } from './Messages';
 import './Author-Profile.css';
 
-export const checkIfOwnProfile = () => {
-    if (sessionStorage.getItem('userID') === authorID()){
-        return <OwnProfilePage/>
+export const checkIfOwnProfile = ( props ) => {
+    const profile = props.match.params.id
+    if (sessionStorage.getItem('userID') === profile){
+        return <OwnProfilePage author={profile}/>
     } else {
-        return <SingleAuthorPage/>
+        return <SingleAuthorPage author={profile}/>
     }
 }
 
-export const SingleAuthorPage = () => {
+export const SingleAuthorPage = (props) => {
     
         const username = sessionStorage.getItem('activeUser')
-        if (localStorage.getItem(username + ' accepted by ' + authorID()  , true)){
-            const messagesPublished = JSON.parse(localStorage.getItem(authorID() +' message'))
+        if (localStorage.getItem(username + ' accepted by ' + props.author, true)){
+            const messagesPublished = JSON.parse(localStorage.getItem(props.author +' message'))
             return(
                 <React.Fragment>
                     <Header/>
-                    <WritersView />
+                    <WritersView author={props.author} />
                 <div className="messages-container">
                     <ul >
                         <h2>Mensajes: </h2>
@@ -35,8 +35,8 @@ export const SingleAuthorPage = () => {
             return (
                 <React.Fragment>
                     <Header/>
-                    <WritersView />
-                    <FollowButton/>
+                    <WritersView author={props.author} />
+                    <FollowButton author={props.author}/>
                     <div className="notifications"></div>
                 </React.Fragment>
                 )   
@@ -50,9 +50,9 @@ const postNotificationRequestSended = () => {
     notification.innerHTML = 'Solicitud de amistad enviada'
 }
 
-const getFriendshipRequest = () => {
+const getFriendshipRequest = (author) => {
     const userRequesting = sessionStorage.getItem('activeUser')
-    const userRequested = authorID()
+    const userRequested = author
     let userPendingRequests =[]
     if (localStorage.getItem(userRequested + ' requested by ')){
         userPendingRequests = JSON.parse(localStorage.getItem(userRequested + ' requested by ')) 
@@ -71,10 +71,10 @@ const fullname = (first, last) => {
 
 const writers = JSON.parse(localStorage.getItem('writers'))
 
-export const WritersView = () =>
+export const WritersView = (props) =>
 writers&& 
 writers.filter(profile => {
-   return profile.login.uuid === authorID()
+   return profile.login.uuid === props.author
 })
 .map(writer => {
     return(
@@ -90,7 +90,7 @@ writers.filter(profile => {
     })
     || null
 
-const FollowButton = () => <button className="follow-button" onClick={getFriendshipRequest} >Follow Author</button>
+const FollowButton = (props) => <button className="follow-button" onClick={() => { getFriendshipRequest (props.author)}} >Follow Author</button>
 
 export default {
     checkIfOwnProfile,
