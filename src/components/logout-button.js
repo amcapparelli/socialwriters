@@ -1,6 +1,6 @@
 import React from 'react';
 import { userLogout } from '../redux';
-import '../utils/logout-button-style.css';
+import '../components/logout-button-style.css';
 
 
 export const LogoutButton = () => 
