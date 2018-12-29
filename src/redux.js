@@ -16,6 +16,8 @@ const loginReducer = (state={}, action) => {
     switch (action.type) {
       case 'ACTIVE_USER':
         return action.value
+      case 'REMOVE_ACTIVE_USER':
+        return ''
     }
     return state
   }
@@ -24,6 +26,8 @@ const loginReducer = (state={}, action) => {
     switch (action.type) {
       case 'GET_USER_NAME':
         return action.value
+      case 'REMOVE_ACTIVE_USER':
+        return ''
     }
     return state
   }
@@ -80,8 +84,11 @@ export const activeUser = (user) => store.dispatch({
   value: user
 })
 
+export const removeActiveUser = () => store.dispatch({
+  type: 'REMOVE_ACTIVE_USER'
+})
+
 export const userLogout = () => {
-  window.location.href='/login'
   store.dispatch({
     type: 'LOGOUT'
   })
