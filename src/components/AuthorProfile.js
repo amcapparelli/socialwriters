@@ -56,7 +56,8 @@ const getFriendshipRequest = (author) => {
     let userPendingRequests =[]
     if (localStorage.getItem(userRequested + ' requested by ')){
         userPendingRequests = JSON.parse(localStorage.getItem(userRequested + ' requested by '))
-
+        
+        // Check if user already send a friendship request before to not duplicate it
         if (userPendingRequests.indexOf(userRequesting) >= 0 ) {
             const notification = document.querySelector('.notifications')
             notification.innerHTML = 'Ya has solicitado seguir a este usuario antes'

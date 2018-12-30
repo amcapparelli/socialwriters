@@ -3,22 +3,27 @@ import { Header } from '../components/Header';
 import { store } from '../redux';
 import { Provider, connect } from 'react-redux';
 import { WritersView } from './AuthorProfile';
+import { GetMessages } from './Messages';
 
 
 export const OwnProfilePage = (props) => {
 
     const requests = JSON.parse(localStorage.getItem(props.author + ' requested by '))
-    
+    const messagesPublished = JSON.parse(localStorage.getItem(props.author + ' message'))
         return(
             <React.Fragment>
                 <Header/>
-                <div className="own-profile-container">
                     <WritersView author={props.author}/>
                     <ViewRequests requests={requests} author={props.author}/>
                     <Provider store={store}>
                         <FormMessagesConnected />
                     </Provider>
-                </div>
+                    <div className="messages-container">
+                        <ul >
+                            <h2>Mensajes: </h2>
+                            <GetMessages  messages={messagesPublished}/>
+                        </ul>
+                    </div>
             </React.Fragment>
         )
     }
