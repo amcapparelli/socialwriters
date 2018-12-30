@@ -55,8 +55,15 @@ const getFriendshipRequest = (author) => {
     const userRequested = author
     let userPendingRequests =[]
     if (localStorage.getItem(userRequested + ' requested by ')){
-        userPendingRequests = JSON.parse(localStorage.getItem(userRequested + ' requested by ')) 
-        userPendingRequests.push(userRequesting)
+        userPendingRequests = JSON.parse(localStorage.getItem(userRequested + ' requested by '))
+
+        if (userPendingRequests.indexOf(userRequesting) >= 0 ) {
+            const notification = document.querySelector('.notifications')
+            notification.innerHTML = 'Ya has solicitado seguir a este usuario antes'
+            return
+        } else {
+            userPendingRequests.push(userRequesting)
+        }
     } else {
         userPendingRequests.push(userRequesting)
     }
