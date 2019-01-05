@@ -3,9 +3,14 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import Routes from './Main'
+import { store } from './redux';
+import { Provider } from 'react-redux';
 
 
-ReactDOM.render(<Routes />, document.getElementById('nav'));
+ReactDOM.render(
+    <Provider store={store}>
+        <Routes />
+    </Provider>, document.getElementById('nav'));
 
 
 // If you want your app to work offline and load faster, you can change

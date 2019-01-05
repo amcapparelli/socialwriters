@@ -1,16 +1,13 @@
 import React  from 'react';
 import './Header.css';
-import { Provider, connect } from 'react-redux'
-import { store } from '../redux'
+import { connect } from 'react-redux'
 import '../components/logout-button-style.css'
 
 export const Header = () => 
     <header>
         <h1> <a href="/">Social Writers</a> </h1>
         <span>A Social Network for Writers</span>
-        <Provider store={store}>
-            <ButtonConnected/>
-        </Provider>
+        <ButtonConnected/>
     </header>
 
   

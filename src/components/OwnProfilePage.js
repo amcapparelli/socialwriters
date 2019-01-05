@@ -1,7 +1,6 @@
 import React from 'react';
 import { Header } from '../components/Header';
-import { store } from '../redux';
-import { Provider, connect } from 'react-redux';
+import { connect } from 'react-redux';
 import { WritersView } from './AuthorProfile';
 import { GetMessages } from './Messages';
 
@@ -15,9 +14,7 @@ export const OwnProfilePage = (props) => {
                 <Header/>
                     <WritersView author={props.author}/>
                     <ViewRequests requests={requests} author={props.author}/>
-                    <Provider store={store}>
-                        <FormMessagesConnected />
-                    </Provider>
+                    <FormMessagesConnected />
                     <div className="messages-container">
                         <ul >
                             <h2>Mensajes: </h2>

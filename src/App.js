@@ -1,6 +1,5 @@
 import React from 'react';
-import { store } from './redux';
-import { Provider, connect } from 'react-redux';
+import { connect } from 'react-redux';
 import fetchUsers from './utils/fetchUsers';
 
 export class LoginPage extends React.Component {
@@ -10,11 +9,7 @@ export class LoginPage extends React.Component {
   }
   
   render() {
-    return (
-      <Provider store={store}>
-        <LoginFormView />
-      </Provider>
-    );
+    return <LoginFormView />
   }
 }
 
@@ -22,6 +17,7 @@ const LoginForm = ({ ...props }) => {
   const changeUserName = (e) => props.getUserName(e.target.value)
   const changePassword = (e) => props.getPassword(e.target.value)
   const writers = JSON.parse(localStorage.getItem('writers'))
+  const error = props.loginStatus
 
   const Validate = () => 
     writers&&
@@ -36,7 +32,7 @@ const LoginForm = ({ ...props }) => {
       props.activeUser( Validate()[0].login.uuid )
       window.location.href='/'
     } else {
-      document.querySelector('.error-message').innerHTML = 'Ese usuario no existe o la contraseña es incorrecta'
+      props.loginError('Ese usuario no existe o la contraseña es incorrecta') 
     } 
   }
   return (
@@ -46,7 +42,12 @@ const LoginForm = ({ ...props }) => {
         <label>Password: </label>
         <input type="password" onChange={changePassword}  ></input>
         <button type="submit" >Login</button>
-        <div className="error-message"></div>
+        {
+          error && 
+            <div className="error-message">
+              {error} 
+            </div>
+        }
     </form>
   )
 }
@@ -55,7 +56,8 @@ export default LoginPage
 
 const mapStateToProps = state => ({
   userName: state.userNameLogin,
-  userPassword: state.passwordLogin
+  userPassword: state.passwordLogin,
+  loginStatus: state.loginStatus
 })
 
 const mapDispatchToProps = dispatch => {
@@ -75,6 +77,12 @@ const mapDispatchToProps = dispatch => {
     userLogin: () => {
       dispatch({
         type: 'LOGIN'
+      })
+    },
+    loginError: (msg) => {
+      dispatch({
+        type: 'LOGIN_ERROR',
+        value: msg
       })
     },
     activeUser: (userId) => {
