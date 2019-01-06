@@ -56,13 +56,22 @@ const newMessageReducer = (state={}, action) => {
     return state
 }
 
+const newNotificationReducer = (state={}, action) => {
+  switch (action.type) {
+    case 'NEW_NOTIFICATION':
+      return action.value
+  }
+  return state
+}
+
 const reducers = (combineReducers({
     logged: loginReducer,
     loginStatus: loginErrorReducer,
     activeUser: activeUserReducer,
     userNameLogin: userNameLoginReducer,
     passwordLogin: passwordLoginReducer,
-    newMessage: newMessageReducer
+    newMessage: newMessageReducer,
+    newNotification: newNotificationReducer
   }))
 
 //State
@@ -71,7 +80,8 @@ const reducers = (combineReducers({
     loginStatus: false,
     activeUser: sessionStorage.getItem('userID'),
     userNameLogin:sessionStorage.getItem('activeUser'),
-    passwordLogin:[]
+    passwordLogin:[],
+    newNotification: ''
   }
 
 //Store
@@ -121,6 +131,11 @@ export const getPassword = (password) => store.dispatch({
 
 export const getNewMessage = (msg) => store.dispatch({
   type: 'NEW_MESSAGE',
+  value: msg
+})
+
+export const newNotification = (msg) => store.dispatch({
+  type: 'NEW_NOTIFICATION', 
   value: msg
 })
 

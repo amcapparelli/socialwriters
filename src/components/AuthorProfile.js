@@ -1,5 +1,6 @@
 /*eslint-disable */
 import React from 'react';
+import { connect } from 'react-redux';
 import { OwnProfilePage } from '../components/OwnProfilePage';
 import { Header } from '../components/Header';
 import { GetMessages } from './Messages';
@@ -36,41 +37,57 @@ export const SingleAuthorPage = (props) => {
                 <React.Fragment>
                     <Header/>
                     <WritersView author={props.author} />
-                    <FollowButton author={props.author}/>
-                    <div className="notifications"></div>
+                    <FriendshipRequesterConnected author={props.author}/>
                 </React.Fragment>
                 )   
         }   
     }
 
-const postNotificationRequestSended = () => {
+/* const Notifications = ({...props}) => {
+    props.newNotification('msg')
+    const notification = props.notifications
+    return (
+        <div className="notifications">{notification}</div>
+    )
+} */
+    
+/* const postNotificationRequestSended = () => {
     const button = document.querySelector('.follow-button')
     button.classList.add('hidden')
     const notification = document.querySelector('.notifications')
     notification.innerHTML = 'Solicitud de amistad enviada'
-}
+} */
 
-const getFriendshipRequest = (author) => {
-    const userRequesting = sessionStorage.getItem('activeUser')
-    const userRequested = author
-    let userPendingRequests =[]
-    if (localStorage.getItem(userRequested + ' requested by ')){
-        userPendingRequests = JSON.parse(localStorage.getItem(userRequested + ' requested by '))
+const FriendshipRequester = ({...props}) => {
+    
+    const getFriendshipRequest = () => {
+        const userRequesting = sessionStorage.getItem('activeUser')
+        const userRequested = props.author
+        let userPendingRequests =[]
         
-        // Check if user already send a friendship request before to not duplicate it
-        if (userPendingRequests.indexOf(userRequesting) >= 0 ) {
-            const notification = document.querySelector('.notifications')
-            notification.innerHTML = 'Ya has solicitado seguir a este usuario antes'
-            return
+        if (localStorage.getItem(userRequested + ' requested by ')){
+            userPendingRequests = JSON.parse(localStorage.getItem(userRequested + ' requested by '))
+            
+            // Check if user already send a friendship request before to not duplicate it
+            if (userPendingRequests.indexOf(userRequesting) >= 0 ) {
+                props.newNotification('Ya has solicitado seguir a este usuario antes')
+                return
+            } else {
+                userPendingRequests.push(userRequesting)
+            }
         } else {
             userPendingRequests.push(userRequesting)
         }
-    } else {
-        userPendingRequests.push(userRequesting)
+        
+        localStorage.setItem(userRequested + ' requested by ', JSON.stringify(userPendingRequests))
+        props.newNotification('solicitud de amistad enviada')
     }
-    
-    localStorage.setItem(userRequested + ' requested by ', JSON.stringify(userPendingRequests))
-    postNotificationRequestSended()
+    return(
+        <div>
+            <button className="follow-button" onClick={() => { getFriendshipRequest (props.author)}} >Follow Author</button>
+            <p className="notifications">{props.notifications}</p>
+        </div>
+    )
 }
 
 const fullname = (first, last) => {
@@ -98,9 +115,26 @@ writers.filter(profile => {
     })
     || null
 
-const FollowButton = (props) => <button className="follow-button" onClick={() => { getFriendshipRequest (props.author)}} >Follow Author</button>
+
 
 export default {
     checkIfOwnProfile,
     WritersView
 }
+
+const mapStateToProps = state => ({
+    notifications: state.newNotification
+})
+
+const mapDispatchToProps = dispatch => {
+    return {
+        newNotification: (msg) => {
+            dispatch({
+                type: 'NEW_NOTIFICATION',
+                value: msg
+            })
+        }
+    }
+}
+
+const FriendshipRequesterConnected = connect(mapStateToProps, mapDispatchToProps)(FriendshipRequester)
