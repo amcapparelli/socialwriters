@@ -17,7 +17,7 @@ const LoginForm = ({ ...props }) => {
   const changeUserName = (e) => props.getUserName(e.target.value)
   const changePassword = (e) => props.getPassword(e.target.value)
   const writers = JSON.parse(localStorage.getItem('writers'))
-  const error = props.loginStatus
+  const error = props.loginErrorStatus
 
   const Validate = () => 
     writers&&
@@ -57,7 +57,7 @@ export default LoginPage
 const mapStateToProps = state => ({
   userName: state.userNameLogin,
   userPassword: state.passwordLogin,
-  loginStatus: state.loginStatus
+  loginErrorStatus: state.loginError
 })
 
 const mapDispatchToProps = dispatch => {
