@@ -5,6 +5,7 @@ import { OwnProfilePage } from '../components/OwnProfilePage';
 import { Header } from '../components/Header';
 import { GetMessages } from './Messages';
 import './Author-Profile.css';
+import { folloWButtonStatus } from '../redux';
 
 export const checkIfOwnProfile = ( props ) => {
     const profile = props.match.params.id
@@ -43,27 +44,15 @@ export const SingleAuthorPage = (props) => {
         }   
     }
 
-/* const Notifications = ({...props}) => {
-    props.newNotification('msg')
-    const notification = props.notifications
-    return (
-        <div className="notifications">{notification}</div>
-    )
-} */
-    
-/* const postNotificationRequestSended = () => {
-    const button = document.querySelector('.follow-button')
-    button.classList.add('hidden')
-    const notification = document.querySelector('.notifications')
-    notification.innerHTML = 'Solicitud de amistad enviada'
-} */
-
 const FriendshipRequester = ({...props}) => {
-    
+
+    let buttonStatus = !props.folloWButtonStatus
+
     const getFriendshipRequest = () => {
         const userRequesting = sessionStorage.getItem('activeUser')
         const userRequested = props.author
         let userPendingRequests =[]
+        props.changeButtonStatus()
         
         if (localStorage.getItem(userRequested + ' requested by ')){
             userPendingRequests = JSON.parse(localStorage.getItem(userRequested + ' requested by '))
@@ -84,7 +73,7 @@ const FriendshipRequester = ({...props}) => {
     }
     return(
         <div>
-            <button className="follow-button" onClick={() => { getFriendshipRequest (props.author)}} >Follow Author</button>
+            <button className={buttonStatus ? 'follow-button' : 'hidden'} onClick={() => { getFriendshipRequest (props.author)}} >Follow Author</button>
             <p className="notifications">{props.notifications}</p>
         </div>
     )
@@ -123,7 +112,8 @@ export default {
 }
 
 const mapStateToProps = state => ({
-    notifications: state.newNotification
+    notifications: state.newNotification,
+    folloWButtonStatus: state.followButtonStatus
 })
 
 const mapDispatchToProps = dispatch => {
@@ -132,6 +122,11 @@ const mapDispatchToProps = dispatch => {
             dispatch({
                 type: 'NEW_NOTIFICATION',
                 value: msg
+            })
+        },
+        changeButtonStatus: () => {
+            dispatch({
+                type: 'DISABLE_BUTTON',
             })
         }
     }

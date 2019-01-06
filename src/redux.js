@@ -64,6 +64,14 @@ const newNotificationReducer = (state={}, action) => {
   return state
 }
 
+const followButtonStatusReducer = (state={}, action) => {
+  switch (action.type) {
+    case 'DISABLE_BUTTON':
+      return true
+  }
+  return state
+}
+
 const reducers = (combineReducers({
     logged: loginReducer,
     loginStatus: loginErrorReducer,
@@ -71,7 +79,8 @@ const reducers = (combineReducers({
     userNameLogin: userNameLoginReducer,
     passwordLogin: passwordLoginReducer,
     newMessage: newMessageReducer,
-    newNotification: newNotificationReducer
+    newNotification: newNotificationReducer,
+    followButtonStatus: followButtonStatusReducer
   }))
 
 //State
@@ -81,7 +90,8 @@ const reducers = (combineReducers({
     activeUser: sessionStorage.getItem('userID'),
     userNameLogin:sessionStorage.getItem('activeUser'),
     passwordLogin:[],
-    newNotification: ''
+    newNotification: '',
+    followButtonStatus: false
   }
 
 //Store
@@ -137,6 +147,10 @@ export const getNewMessage = (msg) => store.dispatch({
 export const newNotification = (msg) => store.dispatch({
   type: 'NEW_NOTIFICATION', 
   value: msg
+})
+
+export const folloWButtonStatus = () => store.dispatch({
+  type: 'DISABLE_BUTTON', 
 })
 
 
