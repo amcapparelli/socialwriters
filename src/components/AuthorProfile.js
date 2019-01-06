@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import { FriendshipRequesterConnected } from './FriendshipRequester'
 import { OwnProfilePage } from '../components/OwnProfilePage';
 import { Header } from '../components/Header';
 import { GetMessages } from './Messages';
@@ -11,12 +12,12 @@ export const checkIfOwnProfile = props => {
     if (sessionStorage.getItem("userID") === profile) {
       return <OwnProfilePage author={profile} />;
     } else {
-      return <SingleAuthorPage author={profile} />;
+      return <SingleAuthorPageConnected author={profile} />;
     }
   };
 
 export const SingleAuthorPage = props => {
-    const username = sessionStorage.getItem("activeUser");
+    const username = props.userNameLogin;
     if (localStorage.getItem(username + " accepted by " + props.author, true)) {
       const messagesPublished = JSON.parse(
         localStorage.getItem(props.author + " message")
@@ -43,53 +44,6 @@ export const SingleAuthorPage = props => {
       );
     }
   };
-
-  const FriendshipRequester = ({ ...props }) => {
-    let buttonStatus = !props.buttonStatus;
-  
-    const getFriendshipRequest = () => {
-      const userRequesting = sessionStorage.getItem("activeUser");
-      const userRequested = props.author;
-      let userPendingRequests = [];
-      props.changeButtonStatus();
-  
-      if (localStorage.getItem(userRequested + " requested by ")) {
-        userPendingRequests = JSON.parse(
-          localStorage.getItem(userRequested + " requested by ")
-        );
-  
-        // Check if user already send a friendship request before to not duplicate it
-        if (userPendingRequests.indexOf(userRequesting) >= 0) {
-          props.newNotification("Ya has solicitado seguir a este usuario antes");
-          return;
-        } else {
-          userPendingRequests.push(userRequesting);
-        }
-      } else {
-        userPendingRequests.push(userRequesting);
-      }
-  
-      localStorage.setItem(
-        userRequested + " requested by ",
-        JSON.stringify(userPendingRequests)
-      );
-      props.newNotification("solicitud de amistad enviada");
-    };
-    return (
-      <div>
-        <button
-          className={buttonStatus ? "follow-button" : "hidden"}
-          onClick={() => {
-            getFriendshipRequest(props.author);
-          }}
-        >
-          Follow Author
-        </button>
-        <p className="notifications">{props.notifications}</p>
-      </div>
-    );
-  };
-  
 
 const fullname = (first, last) => {
     return first + ' ' + last
@@ -126,24 +80,7 @@ export default {
 }
 
 const mapStateToProps = state => ({
-    notifications: state.newNotification,
-    buttonStatus: state.buttonStatus
+    userNameLogin: state.userNameLogin
   });
-  
-  const mapDispatchToProps = dispatch => {
-    return {
-      newNotification: msg => {
-        dispatch({
-          type: "NEW_NOTIFICATION",
-          value: msg
-        });
-      },
-      changeButtonStatus: () => {
-        dispatch({
-          type: "DISABLE_BUTTON"
-        });
-      }
-    };
-  };
 
-const FriendshipRequesterConnected = connect(mapStateToProps, mapDispatchToProps)(FriendshipRequester)
+const SingleAuthorPageConnected = connect(mapStateToProps)(SingleAuthorPage)
