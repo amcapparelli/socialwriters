@@ -2,7 +2,7 @@ import React from "react";
 import { Header } from "../components/Header";
 import { connect } from "react-redux";
 import { FormMessagesConnected } from "./FormMessages";
-import { WritersView } from "./AuthorProfile";
+import { WritersViewConnected } from "./WritersView";
 import { GetMessages } from "./Messages";
 
 export const OwnProfilePage = props => {
@@ -15,7 +15,7 @@ export const OwnProfilePage = props => {
   return (
     <React.Fragment>
       <Header />
-      <WritersView author={props.author} />
+      <WritersViewConnected author={props.author} />
       <FriendRequestsConnected requests={requests} author={props.author} />
       <FormMessagesConnected />
       <div className="messages-container">

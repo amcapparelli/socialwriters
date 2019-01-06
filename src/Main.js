@@ -1,8 +1,10 @@
 import React from "react";
+import { connect } from 'react-redux';
 import { LoginPage } from "./App";
 import { checkIfOwnProfile } from "./components/AuthorProfile";
 import { BrowserRouter, Link, Route } from "react-router-dom";
 import { Header } from "./components/Header";
+import { fullname } from './components/WritersView'
 import "./Main.css";
 
 const Routes = () => {
@@ -38,21 +40,16 @@ const Usersview = () => {
     <div>
       <Header />
       <ul className="writers-view">
-        <WritersView />
+        <AllWritersViewConnected />
       </ul>
     </div>
   );
 };
 
-const writers = JSON.parse(localStorage.getItem("writers"));
-
-const fullname = (first, last) => {
-    return first + ' ' + last
-}
-
-const WritersView = () =>
-  (writers &&
-    writers.map(writer => {
+//All writers cards at home page
+const AllWritersView = ({...props}) =>
+  (props.writers &&
+    props.writers.map(writer => {
       return (
         <li key={writer.name.last}>
           <img 
@@ -66,3 +63,10 @@ const WritersView = () =>
       );
     })) ||
   null;
+
+  const mapStateToProps = state => ({
+    writers: state.getWriters
+  });
+  
+
+  export const AllWritersViewConnected = connect(mapStateToProps)(AllWritersView)

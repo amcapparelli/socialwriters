@@ -16,14 +16,14 @@ export class LoginPage extends React.Component {
 const LoginForm = ({ ...props }) => {
   const changeUserName = (e) => props.getUserName(e.target.value)
   const changePassword = (e) => props.getPassword(e.target.value)
-  const writers = JSON.parse(localStorage.getItem('writers'))
+  const { writers }  = props
   const error = props.loginErrorStatus
 
   const Validate = () => 
     writers&&
     writers.filter(user => 
       user.login.username === props.userName &&
-      user.login.password === props.userPassword)
+      user.login.password === props.userPassword) 
 
   function submit (e) {
     e.preventDefault()
@@ -57,7 +57,8 @@ export default LoginPage
 const mapStateToProps = state => ({
   userName: state.userNameLogin,
   userPassword: state.passwordLogin,
-  loginErrorStatus: state.loginError
+  loginErrorStatus: state.loginError,
+  writers: state.getWriters
 })
 
 const mapDispatchToProps = dispatch => {

@@ -72,6 +72,14 @@ const buttonStatusReducer = (state = {}, action) => {
   return state;
 };
 
+const getWritersReducer = (state = {}, action) => {
+  switch (action.type) {
+    case "GET_WRITERS":
+      return action.value;
+  }
+  return state;
+};
+
 const reducers = combineReducers({
   logged: loginReducer,
   loginError: loginErrorReducer,
@@ -80,7 +88,8 @@ const reducers = combineReducers({
   passwordLogin: passwordLoginReducer,
   newMessage: newMessageReducer,
   newNotification: newNotificationReducer,
-  buttonStatus: buttonStatusReducer
+  buttonStatus: buttonStatusReducer,
+  getWriters: getWritersReducer
 });
 
 //State
@@ -91,7 +100,8 @@ let initialState = {
   userNameLogin: sessionStorage.getItem("activeUser"),
   passwordLogin: [],
   newNotification: "",
-  buttonStatus: false
+  buttonStatus: false,
+  getWriters: JSON.parse(localStorage.getItem("writers"))
 };
 
 //Store
@@ -103,8 +113,8 @@ export const store = createStore(
 
 store.subscribe(() => {
   sessionStorage.setItem("logged", store.getState().logged),
-    sessionStorage.setItem("activeUser", store.getState().userNameLogin),
-    sessionStorage.setItem("userID", store.getState().activeUser);
+  sessionStorage.setItem("activeUser", store.getState().userNameLogin),
+  sessionStorage.setItem("userID", store.getState().activeUser);
 });
 
 //Dispatchers
@@ -164,5 +174,10 @@ export const buttonStatus = () =>
   store.dispatch({
     type: "DISABLE_BUTTON"
   });
+
+export const getWriters = () =>
+  store.dispatch({
+    type: "GET_WRITERS"
+});
 
 export default store;
