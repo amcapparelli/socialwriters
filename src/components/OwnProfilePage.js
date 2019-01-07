@@ -16,7 +16,7 @@ export const OwnProfilePage = props => {
     <React.Fragment>
       <Header />
       <WritersViewConnected author={props.author} />
-      <FriendRequestsConnected requests={requests} author={props.author} />
+      <FriendRequestsConnected author={props.author} />
       <FormMessagesConnected />
       <div className="messages-container">
         <ul>

@@ -9,8 +9,11 @@ import './Author-Profile.css';
 
 export const SingleAuthorPage = props => {
     const username = props.userNameLogin;
-    if (localStorage.getItem(username + " accepted by " + props.author, true)) {
-      const messagesPublished = JSON.parse(
+    const allApprovals = props.friendshipApprovals
+    if (allApprovals.hasOwnProperty(props.author) &&
+        allApprovals[props.author].includes(username)) {
+        
+        const messagesPublished = JSON.parse(
         localStorage.getItem(props.author + " message")
       );
       return (
@@ -37,7 +40,8 @@ export const SingleAuthorPage = props => {
   };
 
 const mapStateToProps = state => ({
-    userNameLogin: state.userNameLogin
+    userNameLogin: state.userNameLogin,
+    friendshipApprovals: state.friendshipApprovals
   });
 
 export const SingleAuthorPageConnected = connect(mapStateToProps)(SingleAuthorPage)
