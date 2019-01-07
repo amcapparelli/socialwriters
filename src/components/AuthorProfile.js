@@ -3,19 +3,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { WritersViewConnected } from './WritersView'
 import { FriendshipRequesterConnected } from './FriendshipRequester'
-import { OwnProfilePage } from '../components/OwnProfilePage';
 import { Header } from '../components/Header';
 import { GetMessages } from './Messages';
 import './Author-Profile.css';
-
-export const checkIfOwnProfile = props => {
-    const profile = props.match.params.id;
-    if (sessionStorage.getItem("userID") === profile) {
-      return <OwnProfilePage author={profile} />;
-    } else {
-      return <SingleAuthorPageConnected author={profile} />;
-    }
-  };
 
 export const SingleAuthorPage = props => {
     const username = props.userNameLogin;
@@ -46,10 +36,8 @@ export const SingleAuthorPage = props => {
     }
   };
 
-export default checkIfOwnProfile
-
 const mapStateToProps = state => ({
     userNameLogin: state.userNameLogin
   });
 
-const SingleAuthorPageConnected = connect(mapStateToProps)(SingleAuthorPage)
+export const SingleAuthorPageConnected = connect(mapStateToProps)(SingleAuthorPage)

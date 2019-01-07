@@ -1,71 +1,91 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React from "react";
+import { connect } from "react-redux";
 
 const FriendshipRequester = ({ ...props }) => {
-    let buttonStatus = !props.buttonStatus;
+  let buttonStatus = !props.buttonStatus;
+
+  const getFriendshipRequest = () => {
+    const userRequesting = props.userName;
+    const userRequested = props.author;
   
-    const getFriendshipRequest = () => {
-      const userRequesting = sessionStorage.getItem("activeUser");
-      const userRequested = props.author;
-      let userPendingRequests = [];
-      props.changeButtonStatus();
+    //get all Friendship Pending Requests
+    let allPendingRequests = props.getFriendshipRequests || {};
   
-      if (localStorage.getItem(userRequested + " requested by ")) {
-        userPendingRequests = JSON.parse(
-          localStorage.getItem(userRequested + " requested by ")
-        );
-  
-        // Check if user already send a friendship request before to not duplicate it
-        if (userPendingRequests.indexOf(userRequesting) >= 0) {
-          props.newNotification("Ya has solicitado seguir a este usuario antes");
-          return;
-        } else {
-          userPendingRequests.push(userRequesting);
-        }
+    //Check if pending requests is not empty
+    if (Object.keys(allPendingRequests).length > 0) {
+      
+      //Check is user has other pending requests and check if this request is repeated
+      if (
+        allPendingRequests.hasOwnProperty(userRequested) &&
+        allPendingRequests[userRequested].includes(userRequesting)
+      ) {
+        props.newNotification("Ya has pedido amistad a este usuario antes");
+        return;
+
+        //If user has other requests but this request is new
+      } else if (allPendingRequests.hasOwnProperty(userRequested)) {
+        allPendingRequests[userRequested].push(userRequesting);
+
+        //If user has no requests
       } else {
-        userPendingRequests.push(userRequesting);
+        allPendingRequests[userRequested] = [userRequesting];
       }
-  
-      localStorage.setItem(
-        userRequested + " requested by ",
-        JSON.stringify(userPendingRequests)
-      );
-      props.newNotification("solicitud de amistad enviada");
-    };
-    return (
-      <div>
-        <button
-          className={buttonStatus ? "follow-button" : "hidden"}
-          onClick={() => {
-            getFriendshipRequest(props.author);
-          }}
-        >
-          Follow Author
-        </button>
-        <p className="notifications">{props.notifications}</p>
-      </div>
-    );
-  };
 
-  const mapStateToProps = state => ({
-    notifications: state.newNotification,
-    buttonStatus: state.buttonStatus
-  });
-  
-  const mapDispatchToProps = dispatch => {
-    return {
-      newNotification: msg => {
-        dispatch({
-          type: "NEW_NOTIFICATION",
-          value: msg
-        });
-      },
-      changeButtonStatus: () => {
-        dispatch({
-          type: "DISABLE_BUTTON"
-        });
-      }
-    };
+      //If this is the first new request
+    } else {
+      allPendingRequests[userRequested] = [userRequesting];
+    }
+    props.addFriendshipRequest(allPendingRequests);
+    props.newNotification("solicitud de amistad enviada");
+    props.changeButtonStatus();
   };
+  
 
-export const FriendshipRequesterConnected = connect(mapStateToProps, mapDispatchToProps)(FriendshipRequester)
+  return (
+    <div>
+      <button
+        className={buttonStatus ? "follow-button" : "hidden"}
+        onClick={() => {
+          getFriendshipRequest(props.author);
+        }}
+      >
+        Follow Author
+      </button>
+      <p className="notifications">{props.notifications}</p>
+    </div>
+  );
+};
+
+const mapStateToProps = state => ({
+  notifications: state.newNotification,
+  buttonStatus: state.buttonStatus,
+  userName: state.userNameLogin,
+  getFriendshipRequests: state.friendshipRequests
+});
+
+const mapDispatchToProps = dispatch => {
+  return {
+    newNotification: msg => {
+      dispatch({
+        type: "NEW_NOTIFICATION",
+        value: msg
+      });
+    },
+    changeButtonStatus: () => {
+      dispatch({
+        type: "DISABLE_BUTTON"
+      });
+    },
+    addFriendshipRequest: obj => {
+      dispatch({
+        type: "ADD_REQUEST",
+        value: obj
+      });
+    }
+  };
+};
+
+export const FriendshipRequesterConnected = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(FriendshipRequester);

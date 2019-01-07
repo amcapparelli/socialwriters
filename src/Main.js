@@ -1,11 +1,11 @@
 import React from "react";
 import { connect } from 'react-redux';
 import { LoginPage } from "./App";
-import { checkIfOwnProfile } from "./components/AuthorProfile";
 import { BrowserRouter, Link, Route } from "react-router-dom";
 import { Header } from "./components/Header";
 import { fullname } from './components/WritersView'
 import "./Main.css";
+import { CheckIfOwnProfileConnected } from "./components/CheckIfOwnProfile";
 
 const Routes = () => {
   return (
@@ -33,7 +33,7 @@ const LoginWarning = () => (
 
 const Home = () => (authentication() ? <Usersview /> : <LoginWarning />);
 const Profiles = props =>
-  authentication() ? checkIfOwnProfile(props) : <LoginWarning />;
+  authentication() ? <CheckIfOwnProfileConnected profile={props} /> : <LoginWarning />;
 
 const Usersview = () => {
   return (

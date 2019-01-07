@@ -80,6 +80,14 @@ const getWritersReducer = (state = {}, action) => {
   return state;
 };
 
+const getFriendshipRequestsReducer = (state = {}, action) => {
+  switch (action.type) {
+    case "ADD_REQUEST":
+      return action.value
+  }
+  return state;
+};
+
 const reducers = combineReducers({
   logged: loginReducer,
   loginError: loginErrorReducer,
@@ -89,7 +97,8 @@ const reducers = combineReducers({
   newMessage: newMessageReducer,
   newNotification: newNotificationReducer,
   buttonStatus: buttonStatusReducer,
-  getWriters: getWritersReducer
+  getWriters: getWritersReducer,
+  friendshipRequests: getFriendshipRequestsReducer
 });
 
 //State
@@ -101,7 +110,8 @@ let initialState = {
   passwordLogin: [],
   newNotification: "",
   buttonStatus: false,
-  getWriters: JSON.parse(localStorage.getItem("writers"))
+  getWriters: JSON.parse(localStorage.getItem("writers")),
+  friendshipRequests: JSON.parse(localStorage.getItem("FriendshipRequests")) || {},
 };
 
 //Store
@@ -115,6 +125,7 @@ store.subscribe(() => {
   sessionStorage.setItem("logged", store.getState().logged),
   sessionStorage.setItem("activeUser", store.getState().userNameLogin),
   sessionStorage.setItem("userID", store.getState().activeUser);
+  localStorage.setItem("FriendshipRequests", JSON.stringify(store.getState().friendshipRequests))
 });
 
 //Dispatchers
@@ -175,9 +186,16 @@ export const buttonStatus = () =>
     type: "DISABLE_BUTTON"
   });
 
-export const getWriters = () =>
+export const getWriters = (writers) =>
   store.dispatch({
-    type: "GET_WRITERS"
+    type: "GET_WRITERS",
+    value: writers
+});
+
+export const getFriendshipRequests = (obj) =>
+  store.dispatch({
+    type: "ADD_REQUEST",
+    value: obj
 });
 
 export default store;
