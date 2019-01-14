@@ -56,6 +56,14 @@ const newMessageReducer = (state = {}, action) => {
   return state;
 };
 
+const allMessagesReducer = (state = {}, action ) => {
+  switch (action.type){
+    case "ALL_MESSAGES":
+      return action.value
+  }
+    return state
+}
+
 const newNotificationReducer = (state = {}, action) => {
   switch (action.type) {
     case "NEW_NOTIFICATION":
@@ -103,6 +111,7 @@ const reducers = combineReducers({
   userNameLogin: userNameLoginReducer,
   passwordLogin: passwordLoginReducer,
   newMessage: newMessageReducer,
+  allMessages: allMessagesReducer,
   newNotification: newNotificationReducer,
   buttonStatus: buttonStatusReducer,
   getWriters: getWritersReducer,
@@ -121,7 +130,7 @@ let initialState = {
   buttonStatus: false,
   getWriters: JSON.parse(localStorage.getItem("writers")),
   friendshipRequests: JSON.parse(localStorage.getItem("FriendshipRequests")) || {},
-  friendshipApprovals: JSON.parse(localStorage.getItem("FriendshipApprovals")) || {},
+  friendshipApprovals: JSON.parse(localStorage.getItem("FriendshipApprovals")) || {}
 };
 
 //Store
@@ -185,6 +194,12 @@ export const getNewMessage = msg =>
     type: "NEW_MESSAGE",
     value: msg
   });
+
+export const getAllMessages = obj =>
+  store.dispatch({
+    type: "ALL_MESSAGES",
+    value: obj
+  })
 
 export const newNotification = msg =>
   store.dispatch({

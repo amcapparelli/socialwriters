@@ -2,23 +2,22 @@ import React from "react";
 import { connect } from "react-redux";
 
 const FormMessages = ({ ...props }) => {
+
   const getNewMessage = e => props.getMessage(e.target.value);
+  const author = props.author
 
   function publishMessage(e) {
     e.preventDefault();
-    let allMessages = [];
-    if (localStorage.getItem(sessionStorage.getItem("userID") + " message")) {
-      allMessages = JSON.parse(
-        localStorage.getItem(sessionStorage.getItem("userID") + " message")
-      );
-      allMessages.push(props.newMessage);
+    let allMessages = props.allMessages;
+    
+    if (allMessages.hasOwnProperty(author)) {
+      allMessages[author].push(props.newMessage)
     } else {
-      allMessages.push(props.newMessage);
+      allMessages[author] = [props.newMessage]
     }
-    localStorage.setItem(
-      sessionStorage.getItem("userID") + " message",
-      JSON.stringify(allMessages)
-    );
+
+    props.publishAllMessages(allMessages)
+    
     const textarea = document.querySelector(".textarea");
     textarea.value = "";
     props.newNotification("¡¡Mensaje publicado con éxito!!");
@@ -46,7 +45,9 @@ const FormMessages = ({ ...props }) => {
 
 const mapStateToProps = state => ({
   newMessage: state.newMessage,
-  notifications: state.newNotification
+  notifications: state.newNotification,
+  author: state.activeUser,
+  allMessages: state.allMessages
 });
 
 const mapDispatchToProps = dispatch => {
@@ -55,6 +56,12 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: "NEW_MESSAGE",
         value: msg
+      });
+    },
+    publishAllMessages: obj => {
+      dispatch({
+        type: "ALL_MESSAGES",
+        value: obj
       });
     },
     newNotification: msg => {
