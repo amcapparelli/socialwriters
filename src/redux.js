@@ -130,7 +130,8 @@ let initialState = {
   buttonStatus: false,
   getWriters: JSON.parse(localStorage.getItem("writers")),
   friendshipRequests: JSON.parse(localStorage.getItem("FriendshipRequests")) || {},
-  friendshipApprovals: JSON.parse(localStorage.getItem("FriendshipApprovals")) || {}
+  friendshipApprovals: JSON.parse(localStorage.getItem("FriendshipApprovals")) || {},
+  allMessages: JSON.parse(localStorage.getItem("Messages")) || {}
 };
 
 //Store
@@ -143,9 +144,10 @@ export const store = createStore(
 store.subscribe(() => {
   sessionStorage.setItem("logged", store.getState().logged),
   sessionStorage.setItem("activeUser", store.getState().userNameLogin),
-  sessionStorage.setItem("userID", store.getState().activeUser);
-  localStorage.setItem("FriendshipRequests", JSON.stringify(store.getState().friendshipRequests))
-  localStorage.setItem("FriendshipApprovals", JSON.stringify(store.getState().friendshipApprovals))
+  sessionStorage.setItem("userID", store.getState().activeUser),
+  localStorage.setItem("FriendshipRequests", JSON.stringify(store.getState().friendshipRequests)),
+  localStorage.setItem("FriendshipApprovals", JSON.stringify(store.getState().friendshipApprovals)),
+  localStorage.setItem("Messages", JSON.stringify(store.getState().allMessages))
 });
 
 //Dispatchers

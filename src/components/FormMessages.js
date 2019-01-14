@@ -6,7 +6,7 @@ const FormMessages = ({ ...props }) => {
   const getNewMessage = e => props.getMessage(e.target.value);
   const author = props.author
 
-  function publishMessage(e) {
+  const publishMessage= (e) => {
     e.preventDefault();
     let allMessages = props.allMessages;
     
@@ -17,10 +17,8 @@ const FormMessages = ({ ...props }) => {
     }
 
     props.publishAllMessages(allMessages)
-    
-    const textarea = document.querySelector(".textarea");
-    textarea.value = "";
     props.newNotification("¡¡Mensaje publicado con éxito!!");
+    
   }
 
   return (
@@ -32,7 +30,7 @@ const FormMessages = ({ ...props }) => {
           cols="130"
           maxLength="150"
           className="textarea"
-          defaultValue="Hasta 150 caraceteres"
+          defaultValue="Hasta 150 caracteres"
           onChange={getNewMessage}
         />
         <br />

@@ -2,16 +2,10 @@ import React from "react";
 import { Header } from "../components/Header";
 import { FormMessagesConnected } from "./FormMessages";
 import { WritersViewConnected } from "./WritersView";
-import { GetMessages } from "./Messages";
+import { GetMessagesConnected } from "./Messages";
 import { FriendRequestsConnected } from './FriendsRequestsContainer'
 
 export const OwnProfilePage = props => {
-  const requests = JSON.parse(
-    localStorage.getItem(props.author + " requested by ")
-  );
-  const messagesPublished = JSON.parse(
-    localStorage.getItem(props.author + " message")
-  );
   return (
     <React.Fragment>
       <Header />
@@ -21,7 +15,7 @@ export const OwnProfilePage = props => {
       <div className="messages-container">
         <ul>
           <h2>Mensajes: </h2>
-          <GetMessages messages={messagesPublished} />
+          <GetMessagesConnected author={props.author} />
         </ul>
       </div>
     </React.Fragment>
