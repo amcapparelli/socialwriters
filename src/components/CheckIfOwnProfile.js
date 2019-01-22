@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { OwnProfilePage } from './OwnProfilePage';
-import { SingleAuthorPageConnected } from './AuthorProfile'
+import { OwnProfilePage } from '../views/OwnProfilePage';
+import { SingleAuthorPageConnected } from '../views/AuthorProfile'
 
 export const CheckIfOwnProfile = ({...props}) => {
     const profile = props.profile.match.params.id;

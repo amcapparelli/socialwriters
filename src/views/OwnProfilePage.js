@@ -1,10 +1,10 @@
 import React from "react";
 import { Header } from "../components/Header";
-import { FormMessagesConnected } from "./FormMessages";
-import { WritersViewConnected } from "./WritersView";
-import { GetMessagesConnected } from "./Messages";
-import { FriendRequestsConnected } from './FriendsRequestsContainer'
-import { NotificationsConnected } from './Notifications'
+import { FormMessagesConnected } from "../components/FormMessages";
+import { WritersViewConnected } from "../components/WritersView";
+import { GetMessagesConnected } from "../components/Messages";
+import { FriendRequestsConnected } from '../components/FriendsRequestsContainer'
+import { NotificationsConnected } from '../components/Notifications'
 
 export const OwnProfilePage = props => {
   return (

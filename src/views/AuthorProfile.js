@@ -1,10 +1,10 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { WritersViewConnected } from './WritersView'
-import { FriendshipRequesterConnected } from './FriendshipRequester'
+import { WritersViewConnected } from '../components/WritersView'
+import { FriendshipRequesterConnected } from '../components/FriendshipRequester'
 import { Header } from '../components/Header';
-import { GetMessagesConnected } from './Messages';
+import { GetMessagesConnected } from '../components/Messages';
 import './Author-Profile.css';
 
 export const SingleAuthorPage = props => {

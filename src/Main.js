@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from 'react-redux';
-import { LoginFormView } from "./App";
+import { LoginFormView } from "./views/Login";
 import { BrowserRouter, Link, Route } from "react-router-dom";
 import { Header } from "./components/Header";
 import { fullname } from './components/WritersView'

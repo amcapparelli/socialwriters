@@ -1,7 +1,6 @@
 import React from "react";
 import "./Header.css";
 import { connect } from "react-redux";
-import "../components/logout-button-style.css";
 
 export const Header = () => (
   <header>

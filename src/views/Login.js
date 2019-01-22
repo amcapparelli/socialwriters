@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getWriters } from './redux';
+import { getWriters } from '../redux/redux';
 
 
 const LoginForm = ({ ...props }) => {
