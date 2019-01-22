@@ -65,7 +65,7 @@ const AllWritersView = ({...props}) =>
   null;
 
   const mapStateToProps = state => ({
-    writers: state.getWriters
+    writers: state.saveWriters
   });
   
 

@@ -13,9 +13,6 @@ export const SingleAuthorPage = props => {
     if (allApprovals.hasOwnProperty(props.author) &&
         allApprovals[props.author].includes(username)) {
         
-        const messagesPublished = JSON.parse(
-        localStorage.getItem(props.author + " message")
-      );
       return (
         <React.Fragment>
           <Header />

@@ -81,9 +81,9 @@ const buttonStatusReducer = (state = {}, action) => {
   return state;
 };
 
-const getWritersReducer = (state = {}, action) => {
+const saveWritersReducer = (state = {}, action) => {
   switch (action.type) {
-    case "GET_WRITERS":
+    case "SAVE_WRITERS":
       return action.value;
   }
   return state;
@@ -115,7 +115,7 @@ const reducers = combineReducers({
   allMessages: allMessagesReducer,
   newNotification: newNotificationReducer,
   buttonStatus: buttonStatusReducer,
-  getWriters: getWritersReducer,
+  saveWriters: saveWritersReducer,
   friendshipRequests: getFriendshipRequestsReducer,
   friendshipApprovals: getFriendshipApprovalsReducer
 });
@@ -129,7 +129,7 @@ let initialState = {
   passwordLogin: [],
   newNotification: "",
   buttonStatus: false,
-  getWriters: JSON.parse(localStorage.getItem("writers")),
+  saveWriters: JSON.parse(localStorage.getItem("writers")),
   friendshipRequests: JSON.parse(localStorage.getItem("FriendshipRequests")) || {},
   friendshipApprovals: JSON.parse(localStorage.getItem("FriendshipApprovals")) || {},
   allMessages: JSON.parse(localStorage.getItem("Messages")) || {}
@@ -149,6 +149,7 @@ store.subscribe(() => {
   sessionStorage.setItem("logged", store.getState().logged),
   sessionStorage.setItem("activeUser", store.getState().userNameLogin),
   sessionStorage.setItem("userID", store.getState().activeUser),
+  localStorage.setItem("writers", JSON.stringify(store.getState().saveWriters)),
   localStorage.setItem("FriendshipRequests", JSON.stringify(store.getState().friendshipRequests)),
   localStorage.setItem("FriendshipApprovals", JSON.stringify(store.getState().friendshipApprovals)),
   localStorage.setItem("Messages", JSON.stringify(store.getState().allMessages))
@@ -218,11 +219,20 @@ export const buttonStatus = () =>
     type: "DISABLE_BUTTON"
   });
 
-export const getWriters = (writers) =>
+export const saveWriters = (writers) =>
   store.dispatch({
-    type: "GET_WRITERS",
+    type: "SAVE_WRITERS",
     value: writers
 });
+
+export const getWriters = (url) => {
+  return function (dispatch) {
+    return fetch(url)
+            .then(response => response.json())
+            .then(usersFromApi => dispatch(saveWriters(usersFromApi.results)))
+            .catch(error => console.log('Hubo un error', error))
+  }
+}
 
 export const getFriendshipRequests = (obj) =>
   store.dispatch({

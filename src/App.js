@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import fetchUsers from './utils/fetchUsers';
+import { getWriters } from './redux';
 
 export class LoginPage extends React.Component {
   
-  componentDidMount () {
+  /* componentDidMount () {
     fetchUsers()
-  }
+  } */
   
   render() {
     return <LoginFormView />
@@ -16,6 +16,7 @@ export class LoginPage extends React.Component {
 const LoginForm = ({ ...props }) => {
   const changeUserName = (e) => props.getUserName(e.target.value)
   const changePassword = (e) => props.getPassword(e.target.value)
+  props.fetchData('https://randomuser.me/api/?results=10&seed=xxx')
   const { writers }  = props
   const error = props.loginErrorStatus
 
@@ -58,7 +59,7 @@ const mapStateToProps = state => ({
   userName: state.userNameLogin,
   userPassword: state.passwordLogin,
   loginErrorStatus: state.loginError,
-  writers: state.getWriters
+  writers: state.saveWriters
 })
 
 const mapDispatchToProps = dispatch => {
@@ -91,6 +92,9 @@ const mapDispatchToProps = dispatch => {
         type: 'ACTIVE_USER',
         value: userId
       })
+    },
+    fetchData: (url) => {
+      dispatch(getWriters(url))
     }
   }
 }
