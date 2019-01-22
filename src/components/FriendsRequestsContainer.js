@@ -77,7 +77,6 @@ const FriendRequests = ({ ...props }) => {
             >
               Rechazar
             </button>
-            <p className="notifications">{props.notifications}</p>
           </div>
         );
       })) ||
@@ -86,7 +85,6 @@ const FriendRequests = ({ ...props }) => {
 };
 
 const mapStateToProps = state => ({
-  notifications: state.newNotification,
   buttonStatus: state.buttonStatus,
   friendshipRequests: state.friendshipRequests,
   userNameLogin: state.userNameLogin,

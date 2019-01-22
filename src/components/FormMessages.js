@@ -35,7 +35,6 @@ const FormMessages = ({ ...props }) => {
         />
         <br />
         <button>Publicar</button>
-        <div className="notifications">{props.notifications}</div>
       </div>
     </form>
   );
@@ -43,7 +42,6 @@ const FormMessages = ({ ...props }) => {
 
 const mapStateToProps = state => ({
   newMessage: state.newMessage,
-  notifications: state.newNotification,
   author: state.activeUser,
   allMessages: state.allMessages
 });

@@ -13,6 +13,9 @@ password: marine1
 +  username: whitefish829 |
  password: manfred
 
++ username: lazytiger690 |
+  password: alyssa
+
 or any of these 10 other users: 
 
 ```
