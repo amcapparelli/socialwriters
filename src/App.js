@@ -2,16 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { getWriters } from './redux';
 
-export class LoginPage extends React.Component {
-  
-  /* componentDidMount () {
-    fetchUsers()
-  } */
-  
-  render() {
-    return <LoginFormView />
-  }
-}
 
 const LoginForm = ({ ...props }) => {
   const changeUserName = (e) => props.getUserName(e.target.value)
@@ -52,8 +42,6 @@ const LoginForm = ({ ...props }) => {
     </form>
   )
 }
-
-export default LoginPage 
 
 const mapStateToProps = state => ({
   userName: state.userNameLogin,
@@ -99,5 +87,5 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-const LoginFormView = connect(mapStateToProps, mapDispatchToProps)(LoginForm)
+export const LoginFormView = connect(mapStateToProps, mapDispatchToProps)(LoginForm)
 

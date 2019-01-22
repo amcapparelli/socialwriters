@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from 'react-redux';
-import { LoginPage } from "./App";
+import { LoginFormView } from "./App";
 import { BrowserRouter, Link, Route } from "react-router-dom";
 import { Header } from "./components/Header";
 import { fullname } from './components/WritersView'
@@ -12,7 +12,7 @@ const Routes = () => {
     <BrowserRouter>
       <div>
         <Route exact path="/" component={Home} />
-        <Route path="/login" component={LoginPage} />
+        <Route path="/login" component={LoginFormView} />
         <Route path="/author/:id" component={Profiles} />
       </div>
     </BrowserRouter>
