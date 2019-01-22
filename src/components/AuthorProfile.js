@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { WritersViewConnected } from './WritersView'
 import { FriendshipRequesterConnected } from './FriendshipRequester'
 import { Header } from '../components/Header';
-import { GetMessages } from './Messages';
+import { GetMessagesConnected } from './Messages';
 import './Author-Profile.css';
 
 export const SingleAuthorPage = props => {
@@ -23,7 +23,7 @@ export const SingleAuthorPage = props => {
           <div className="messages-container">
             <ul>
               <h2>Mensajes: </h2>
-              <GetMessages messages={messagesPublished} />
+              <GetMessagesConnected author={props.author} />
             </ul>
           </div>
         </React.Fragment>
