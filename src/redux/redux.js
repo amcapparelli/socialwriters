@@ -1,7 +1,7 @@
 /*eslint-disable */
 import { createStore, applyMiddleware } from "redux";
-import thunk from 'redux-thunk'
-import { reducers } from './reducers'
+import thunk from "redux-thunk";
+import { reducers } from "./reducers";
 
 //State
 let initialState = {
@@ -13,14 +13,16 @@ let initialState = {
   newNotification: "",
   buttonStatus: false,
   saveWriters: JSON.parse(localStorage.getItem("writers")),
-  friendshipRequests: JSON.parse(localStorage.getItem("FriendshipRequests")) || {},
-  friendshipApprovals: JSON.parse(localStorage.getItem("FriendshipApprovals")) || {},
+  friendshipRequests:
+    JSON.parse(localStorage.getItem("FriendshipRequests")) || {},
+  friendshipApprovals:
+    JSON.parse(localStorage.getItem("FriendshipApprovals")) || {},
   allMessages: JSON.parse(localStorage.getItem("Messages")) || {}
 };
 
 //Store
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export const store = createStore(
   reducers,
@@ -30,12 +32,24 @@ export const store = createStore(
 
 store.subscribe(() => {
   sessionStorage.setItem("logged", store.getState().logged),
-  sessionStorage.setItem("activeUser", store.getState().userNameLogin),
-  sessionStorage.setItem("userID", store.getState().activeUser),
-  localStorage.setItem("writers", JSON.stringify(store.getState().saveWriters)),
-  localStorage.setItem("FriendshipRequests", JSON.stringify(store.getState().friendshipRequests)),
-  localStorage.setItem("FriendshipApprovals", JSON.stringify(store.getState().friendshipApprovals)),
-  localStorage.setItem("Messages", JSON.stringify(store.getState().allMessages))
+    sessionStorage.setItem("activeUser", store.getState().userNameLogin),
+    sessionStorage.setItem("userID", store.getState().activeUser),
+    localStorage.setItem(
+      "writers",
+      JSON.stringify(store.getState().saveWriters)
+    ),
+    localStorage.setItem(
+      "FriendshipRequests",
+      JSON.stringify(store.getState().friendshipRequests)
+    ),
+    localStorage.setItem(
+      "FriendshipApprovals",
+      JSON.stringify(store.getState().friendshipApprovals)
+    ),
+    localStorage.setItem(
+      "Messages",
+      JSON.stringify(store.getState().allMessages)
+    );
 });
 
 //Dispatchers
@@ -89,7 +103,7 @@ export const getAllMessages = obj =>
   store.dispatch({
     type: "ALL_MESSAGES",
     value: obj
-  })
+  });
 
 export const newNotification = msg =>
   store.dispatch({
@@ -102,31 +116,51 @@ export const buttonStatus = () =>
     type: "DISABLE_BUTTON"
   });
 
-export const saveWriters = (writers) =>
+export const saveWriters = writers =>
   store.dispatch({
     type: "SAVE_WRITERS",
     value: writers
-});
+  });
 
-export const getWriters = (url) => {
-  return function (dispatch) {
+export const getWriters = url => {
+  return function(dispatch) {
     return fetch(url)
-            .then(response => response.json())
-            .then(usersFromApi => dispatch(saveWriters(usersFromApi.results)))
-            .catch(error => console.log('Hubo un error', error))
-  }
-}
+      .then(response => response.json())
+      .then(usersFromApi => dispatch(saveWriters(usersFromApi.results)))
+      .catch(error => console.log("Hubo un error", error));
+  };
+};
 
-export const getFriendshipRequests = (obj) =>
+export const login = () => {
+  return function(dispatch) {
+    const writers = store.getState().saveWriters;
+    const user = writers.filter(
+      user =>
+        user.login.username === store.getState().userNameLogin &&
+        user.login.password === store.getState().passwordLogin
+    );
+    if (user.length === 0) {
+      return dispatch(
+        loginError("Ese usuario no existe o la contraseña es incorrecta")
+      );
+    } else {
+      // falta que se haga el userLogin
+      window.location.href = "/";
+      return dispatch(activeUser(user[0].login.uuid));
+    }
+  };
+};
+
+export const getFriendshipRequests = obj =>
   store.dispatch({
     type: "ADD_REQUEST",
     value: obj
-});
+  });
 
-export const getFriendshipApprovals = (obj) =>
+export const getFriendshipApprovals = obj =>
   store.dispatch({
     type: "ADD_APPROVAL",
     value: obj
-});
+  });
 
 export default store;
