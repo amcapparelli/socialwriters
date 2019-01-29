@@ -6,27 +6,11 @@ const LoginForm = ({ ...props }) => {
   const changeUserName = e => props.getUserName(e.target.value);
   const changePassword = e => props.getPassword(e.target.value);
   props.fetchData("https://randomuser.me/api/?results=10&seed=xxx");
-  /* const { writers } = props; */
   const error = props.loginErrorStatus;
-
-  /* const Validate = () =>
-    writers &&
-    writers.filter(
-      user =>
-        user.login.username === props.userName &&
-        user.login.password === props.userPassword
-    ); */
 
   function submit(e) {
     e.preventDefault();
     props.loginSubmit()
-    /* if (Validate().length === 1) {
-      props.userLogin();
-      props.activeUser(Validate()[0].login.uuid);
-      window.location.href = "/";
-    } else {
-      props.loginError("Ese usuario no existe o la contraseña es incorrecta");
-    } */
   }
   return (
     <form onSubmit={submit} className="login-form">
@@ -41,6 +25,7 @@ const LoginForm = ({ ...props }) => {
 };
 
 const mapStateToProps = state => ({
+  logged: state.logged,
   userName: state.userNameLogin,
   userPassword: state.passwordLogin,
   loginErrorStatus: state.loginError,

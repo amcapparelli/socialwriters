@@ -16,6 +16,7 @@ export default Header;
 
 const LogoutButton = ({ ...props }) => {
   const logout = () => {
+    window.location.href = "/login";
     props.userlogout();
     props.removeActiveUser();
   };
@@ -36,7 +37,6 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: "LOGOUT"
       });
-      window.location.href = "/login";
     },
     removeActiveUser: () => {
       dispatch({

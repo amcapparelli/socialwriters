@@ -144,9 +144,8 @@ export const login = () => {
         loginError("Ese usuario no existe o la contraseña es incorrecta")
       );
     } else {
-      // falta que se haga el userLogin
-      window.location.href = "/";
-      return dispatch(activeUser(user[0].login.uuid));
+      window.location.href = "/"
+      return dispatch(activeUser(user[0].login.uuid), userLogin());
     }
   };
 };
