@@ -2,26 +2,10 @@
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { reducers } from "./reducers";
+import { initialState } from './initialState';
 
-//State
-let initialState = {
-  logged: sessionStorage.getItem("logged"),
-  loginError: false,
-  activeUser: sessionStorage.getItem("userID"),
-  userNameLogin: sessionStorage.getItem("activeUser"),
-  passwordLogin: [],
-  newNotification: "",
-  buttonStatus: false,
-  saveWriters: JSON.parse(localStorage.getItem("writers")),
-  friendshipRequests:
-    JSON.parse(localStorage.getItem("FriendshipRequests")) || {},
-  friendshipApprovals:
-    JSON.parse(localStorage.getItem("FriendshipApprovals")) || {},
-  allMessages: JSON.parse(localStorage.getItem("Messages")) || {}
-};
 
 //Store
-
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export const store = createStore(

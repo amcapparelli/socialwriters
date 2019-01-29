@@ -2,7 +2,7 @@ import React from "react";
 import "./Header.css";
 import { connect } from "react-redux";
 
-export const Header = () => (
+export const Header = (props) => (
   <header>
     <h1>
       <a href="/">Social Writers</a>

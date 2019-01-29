@@ -46,23 +46,6 @@ const mapDispatchToProps = dispatch => {
         value: password
       });
     },
-    userLogin: () => {
-      dispatch({
-        type: "LOGIN"
-      });
-    },
-    loginError: msg => {
-      dispatch({
-        type: "LOGIN_ERROR",
-        value: msg
-      });
-    },
-    activeUser: userId => {
-      dispatch({
-        type: "ACTIVE_USER",
-        value: userId
-      });
-    },
     fetchData: url => {
       dispatch(getWriters(url));
     },

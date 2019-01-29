@@ -9,10 +9,10 @@ const Home = ({...props}) => {
     return userlogged === 'true' ? <HomeView /> : <LoginWarning />
 }
 
-const HomeView = () => {
+const HomeView = (props) => {
   return (
     <div>
-      <Header />
+      <Header props={props} />
       <ul className="writers-view">
         <AllWritersViewConnected />
       </ul>
