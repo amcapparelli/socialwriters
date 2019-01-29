@@ -2,7 +2,7 @@ import React from "react";
 import "./Header.css";
 import { connect } from "react-redux";
 
-export const Header = (props) => (
+export const Header = ({...props}) => (
   <header>
     <h1>
       <a href="/">Social Writers</a>
@@ -16,7 +16,7 @@ export default Header;
 
 const LogoutButton = ({ ...props }) => {
   const logout = () => {
-    window.location.href = "/login";
+    window.location.href = '/login'
     props.userlogout();
     props.removeActiveUser();
   };
@@ -41,6 +41,12 @@ const mapDispatchToProps = dispatch => {
     removeActiveUser: () => {
       dispatch({
         type: "REMOVE_ACTIVE_USER"
+      });
+    },
+    redirect: url => {
+      dispatch({
+        type: "REDIRECT",
+        value: url
       });
     }
   };

@@ -5,14 +5,14 @@ import { LoginWarning } from '../components/LoginWarning';
 import { AllWritersViewConnected } from '../components/AllWritersView';
 
 const Home = ({...props}) => {
-    const userlogged = props.logged 
+    const userlogged = props.logged
     return userlogged === 'true' ? <HomeView /> : <LoginWarning />
 }
 
-const HomeView = (props) => {
+const HomeView = () => {
   return (
     <div>
-      <Header props={props} />
+      <Header />
       <ul className="writers-view">
         <AllWritersViewConnected />
       </ul>

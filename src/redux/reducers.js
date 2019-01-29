@@ -86,7 +86,7 @@ const loginReducer = (state = {}, action) => {
     }
     return state;
   };
-  
+
   const getFriendshipRequestsReducer = (state = {}, action) => {
     switch (action.type) {
       case "ADD_REQUEST":

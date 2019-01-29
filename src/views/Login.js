@@ -6,12 +6,13 @@ const LoginForm = ({ ...props }) => {
   const changeUserName = e => props.getUserName(e.target.value);
   const changePassword = e => props.getPassword(e.target.value);
   props.fetchData("https://randomuser.me/api/?results=10&seed=xxx");
-  const error = props.loginErrorStatus;
+  const error = props.loginErrorStatus; 
 
   function submit(e) {
     e.preventDefault();
     props.loginSubmit()
   }
+
   return (
     <form onSubmit={submit} className="login-form">
       <label>UserName: </label>
