@@ -9,15 +9,6 @@ const FriendRequests = ({ ...props }) => {
     requests = allRequests[author];
   }
 
-  const postNotificationFriendshipStatus = approve => {
-    props.changeButtonStatus();
-    if (approve) {
-      props.newNotification("¡Has aceptado la solicitud!");
-    } else {
-      props.newNotification("Has rechazado la solicitud... :(");
-    }
-  };
-
   const getApproveRequestData = (request, author, approve) => {
     //find the index of the user requesting friendship
     const index = requests.findIndex(item => item === request);
@@ -46,9 +37,11 @@ const FriendRequests = ({ ...props }) => {
         allApprovals[author] = [request];
       }
       props.getFriendshipApprovals(allApprovals);
-      postNotificationFriendshipStatus(approve);
+      props.newNotification("¡Has aceptado la solicitud!");
+      props.changeButtonStatus();
     } else {
-      postNotificationFriendshipStatus();
+      props.newNotification("Has rechazado la solicitud... :(");
+      props.changeButtonStatus();
     }
   };
 
