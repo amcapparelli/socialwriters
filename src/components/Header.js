@@ -1,6 +1,7 @@
 import React from "react";
-import "./Header.css";
 import { connect } from "react-redux";
+import {  withRouter } from "react-router-dom";
+import "./Header.css";
 
 export const Header = ({...props}) => (
   <header>
@@ -16,14 +17,14 @@ export default Header;
 
 const LogoutButton = ({ ...props }) => {
   const logout = () => {
-    window.location.href = '/login'
+    props.history.push("/login");
     props.userlogout();
     props.removeActiveUser();
   };
   return (
-    <button onClick={logout} className="logout-button">
-      logout
-    </button>
+      <button onClick={logout} className="logout-button">
+        logout
+      </button>
   );
 };
 
@@ -42,12 +43,6 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: "REMOVE_ACTIVE_USER"
       });
-    },
-    redirect: url => {
-      dispatch({
-        type: "REDIRECT",
-        value: url
-      });
     }
   };
 };
@@ -55,4 +50,4 @@ const mapDispatchToProps = dispatch => {
 const ButtonConnected = connect(
   mapStateToProps,
   mapDispatchToProps
-)(LogoutButton);
+)(withRouter(LogoutButton));
