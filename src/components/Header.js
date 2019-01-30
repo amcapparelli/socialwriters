@@ -1,12 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
-import {  withRouter } from "react-router-dom";
+import {  withRouter, Link } from "react-router-dom";
 import "./Header.css";
 
-export const Header = ({...props}) => (
+export const Header = () => (
   <header>
     <h1>
-      <a href="/">Social Writers</a>
+      <Link to='/'>
+        Social Writers
+      </Link>
     </h1>
     <span>A Social Network for Writers</span>
     <ButtonConnected />
@@ -20,6 +22,8 @@ const LogoutButton = ({ ...props }) => {
     props.history.push("/login");
     props.userlogout();
     props.removeActiveUser();
+    props.cleanNotifications();
+    props.buttonStatusEnable();
   };
   return (
       <button onClick={logout} className="logout-button">
@@ -28,9 +32,6 @@ const LogoutButton = ({ ...props }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  logged: state.logged
-});
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -43,11 +44,21 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: "REMOVE_ACTIVE_USER"
       });
+    },
+    cleanNotifications: () => {
+      dispatch({
+        type: "CLEAN_NOTIFICATIONS"
+      })
+    },
+    buttonStatusEnable: () => {
+      dispatch({
+        type: "ENABLE_BUTTON"
+      })
     }
   };
 };
 
 const ButtonConnected = connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(withRouter(LogoutButton));

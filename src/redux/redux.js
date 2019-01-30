@@ -95,9 +95,19 @@ export const newNotification = msg =>
     value: msg
   });
 
+export const cleanNotifications = () =>
+  store.dispatch({
+    type: "CLEAN_NOTIFICATIONS"
+  })
+
 export const buttonStatus = () =>
   store.dispatch({
     type: "DISABLE_BUTTON"
+  });
+
+export const buttonStatusEnable = () =>
+  store.dispatch({
+    type: "ENABLE_BUTTON"
   });
 
 export const saveWriters = writers =>
@@ -115,7 +125,7 @@ export const getWriters = url => {
   };
 };
 
-export const login = () => {
+export const login = (props) => {
   return function(dispatch) {
     const writers = store.getState().saveWriters;
     const user = writers.filter(
@@ -128,7 +138,7 @@ export const login = () => {
         loginError("Ese usuario no existe o la contraseña es incorrecta")
       );
     } else {
-      window.location.href = "/"
+      props.push('/')
       return dispatch(activeUser(user[0].login.uuid), userLogin());
     }
   };

@@ -6,7 +6,7 @@ import { AllWritersViewConnected } from '../components/AllWritersView';
 
 const Home = ({...props}) => {
     const userlogged = props.logged
-    return userlogged === 'true' ? <HomeView /> : <LoginWarning />
+    return userlogged === true ? <HomeView /> : <LoginWarning />
 }
 
 const HomeView = () => {

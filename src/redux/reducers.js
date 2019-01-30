@@ -67,6 +67,8 @@ const loginReducer = (state = {}, action) => {
     switch (action.type) {
       case "NEW_NOTIFICATION":
         return action.value;
+      case "CLEAN_NOTIFICATIONS":
+        return '';
     }
     return state;
   };
@@ -75,6 +77,8 @@ const loginReducer = (state = {}, action) => {
     switch (action.type) {
       case "DISABLE_BUTTON":
         return true;
+      case "ENABLE_BUTTON":
+        return false;
     }
     return state;
   };

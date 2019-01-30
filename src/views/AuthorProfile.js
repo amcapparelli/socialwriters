@@ -8,6 +8,8 @@ import { GetMessagesConnected } from '../components/Messages';
 import './Author-Profile.css';
 
 export const SingleAuthorPage = props => {
+    props.cleanNotifications()
+    props.buttonStatusEnable()
     const username = props.userNameLogin;
     const allApprovals = props.friendshipApprovals
     if (allApprovals.hasOwnProperty(props.author) &&
@@ -41,4 +43,19 @@ const mapStateToProps = state => ({
     friendshipApprovals: state.friendshipApprovals
   });
 
-export const SingleAuthorPageConnected = connect(mapStateToProps)(SingleAuthorPage)
+  const mapDispatchToProps = dispatch => {
+    return {
+      cleanNotifications: () => {
+        dispatch({
+          type: "CLEAN_NOTIFICATIONS"
+        })
+      },
+      buttonStatusEnable: () => {
+        dispatch({
+          type: "ENABLE_BUTTON"
+        })
+      }
+    };
+  };
+
+export const SingleAuthorPageConnected = connect(mapStateToProps, mapDispatchToProps)(SingleAuthorPage)

@@ -1,7 +1,7 @@
 
 //Initial State
 export let initialState = {
-    logged: sessionStorage.getItem("logged"),
+    logged: JSON.parse(sessionStorage.getItem("logged")),
     loginError: false,
     activeUser: sessionStorage.getItem("userID"),
     userNameLogin: sessionStorage.getItem("activeUser"),

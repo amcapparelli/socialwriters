@@ -10,7 +10,7 @@ const LoginForm = ({ ...props }) => {
 
   function submit(e) {
     e.preventDefault();
-    props.loginSubmit()
+    props.loginSubmit(props.history)
   }
 
   return (
@@ -50,8 +50,8 @@ const mapDispatchToProps = dispatch => {
     fetchData: url => {
       dispatch(getWriters(url));
     },
-    loginSubmit: () => {
-      dispatch(login());
+    loginSubmit: (props) => {
+      dispatch(login(props));
     }
   };
 };

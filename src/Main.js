@@ -21,7 +21,7 @@ const Routes = () => {
 
 const Profiles = ({ ...props }) => {
   const userlogged = props.logged;
-  return userlogged === "true" ? <CheckIfOwnProfileConnected profile={props} />
+  return userlogged === true ? <CheckIfOwnProfileConnected profile={props} />
                                : <LoginWarning />;
 };
 
