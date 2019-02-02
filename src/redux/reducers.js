@@ -1,5 +1,6 @@
 /*eslint-disable */
 import { combineReducers } from "redux";
+import { initialState } from './initialState';
 
 const loginReducer = (state = {}, action) => {
     switch (action.type) {
@@ -91,7 +92,7 @@ const loginReducer = (state = {}, action) => {
     return state;
   };
 
-  const getFriendshipRequestsReducer = (state = {}, action) => {
+  const getFriendshipRequestsReducer = (state = initialState, action) => {
     switch (action.type) {
       case "ADD_REQUEST":
         return action.value

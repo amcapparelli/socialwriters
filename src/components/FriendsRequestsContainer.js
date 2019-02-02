@@ -37,11 +37,10 @@ const FriendRequests = ({ ...props }) => {
         allApprovals[author] = [request];
       }
       props.getFriendshipApprovals(allApprovals);
-      props.newNotification("¡Has aceptado la solicitud!");
-      props.changeButtonStatus();
+      props.newNotification(`¡Has aceptado la solicitud de ${request} !`);
+      
     } else {
-      props.newNotification("Has rechazado la solicitud... :(");
-      props.changeButtonStatus();
+      props.newNotification(`Has rechazado la solicitud de ${request} :(`);
     }
   };
 
@@ -78,7 +77,7 @@ const FriendRequests = ({ ...props }) => {
 };
 
 const mapStateToProps = state => ({
-  buttonStatus: state.buttonStatus,
+  notifications: state.newNotification,
   friendshipRequests: state.friendshipRequests,
   userNameLogin: state.userNameLogin,
   friendshipApprovals: state.friendshipApprovals
